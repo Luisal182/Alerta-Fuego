@@ -1,13 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { reportFormSchema } from '../../types';
 import type { ReportFormData, RiskLevel } from '../../types';
 import styles from './ReportForm.module.css';
 
-export default function ReportForm() {
+interface ReportFormProps {
+  initialLat?: number;
+  initialLng?: number;
+}
+
+export default function ReportForm({ initialLat = -33.4489, initialLng = -70.6693 }: ReportFormProps) {
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel>('medium');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+
 
   const {
     register,
@@ -17,11 +24,16 @@ export default function ReportForm() {
   } = useForm<ReportFormData>({
     resolver: zodResolver(reportFormSchema),
     defaultValues: {
-      latitude: -33.4489,
-      longitude: -70.6693,
+      latitude: initialLat,
+      longitude: initialLng,
       riskLevel: 'medium',
     },
   });
+  // Update form when coordinates change from map click
+  useEffect(() => {
+    setValue('latitude', initialLat);
+    setValue('longitude', initialLng);
+  }, [initialLat, initialLng, setValue]);
 
   const onSubmit = async (data: ReportFormData) => {
     setIsSubmitting(true);
