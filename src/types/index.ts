@@ -16,3 +16,13 @@ export const reportFormSchema = z.object({
 
 // Type inference from schema
 export type ReportFormData = z.infer<typeof reportFormSchema>;
+
+// Incident data type
+export interface Incident {
+  id: number;
+  latitude: number;
+  longitude: number;
+  description: string;
+  riskLevel: RiskLevel;
+  timestamp: string;
+}
