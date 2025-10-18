@@ -13,6 +13,11 @@
     padding: 0 24px;
     gap: 12px;
     flex-shrink: 0;
+    transition: background 0.3s ease;
+  }
+  
+  [data-theme="dark"] .mapHeader {
+    background: linear-gradient(to right, #1F2937, #374151);
   }
   
   .mapHeaderIcon {
@@ -20,11 +25,19 @@
     color: white;
   }
   
+  [data-theme="dark"] .mapHeaderIcon {
+    color: var(--text-primary);
+  }
+  
   .mapHeaderTitle {
     color: white;
     font-size: 20px;
     font-weight: 700;
     margin: 0;
+  }
+  
+  [data-theme="dark"] .mapHeaderTitle {
+    color: var(--text-primary);
   }
   
   /* Map Wrapper */
@@ -41,24 +54,37 @@
     cursor: crosshair;
   }
   
+  /* Dark mode styles for Leaflet tiles */
+  [data-theme="dark"] .leafletMap {
+    filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+  }
+  
   /* Legend */
   .legend {
     position: absolute;
     top: 16px;
     right: 16px;
-    background: white;
+    background: var(--bg-secondary);
     padding: 16px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     min-width: 180px;
     z-index: 1000;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  
+  [data-theme="dark"] .legend {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border-color: var(--border-color);
   }
   
   .legendTitle {
     font-size: 14px;
     font-weight: 700;
     margin: 0 0 12px 0;
-    color: #1F2937;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
   }
   
   .legendItem {
@@ -67,7 +93,8 @@
     gap: 8px;
     margin-bottom: 10px;
     font-size: 14px;
-    color: #1F2937;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
   }
   
   .legendItem:last-child {
