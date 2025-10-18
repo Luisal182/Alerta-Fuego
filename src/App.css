@@ -7,5 +7,6 @@
 .main-content-temp {
   flex: 1;
   padding: 40px;
-  background: #F8F9FA;
+  background: var(--bg-primary); 
 }
+

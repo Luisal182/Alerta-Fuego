@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import './App.css';
@@ -11,6 +11,15 @@ function App() {
 
   const [selectedLat, setSelectedLat] = useState(-33.4489);
   const [selectedLng, setSelectedLng] = useState(-70.6693);
+  const [isDarkMode, setIsDarkMode] = useState (false)
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setIsDarkMode(true);
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }, []);
 
   const handleReportClick = () => {
     console.log('Report button clicked');
@@ -22,9 +31,26 @@ function App() {
     setSelectedLng(lng);
   };
 
+   const handleThemeToggle = () => {
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+    
+    if (newTheme) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+    }
+  };
+
   return (
     <div className="App">
-      <Header onReportClick={handleReportClick} />
+      <Header
+       onReportClick={handleReportClick} 
+       onThemeToggle={handleThemeToggle}
+        isDarkMode={isDarkMode}
+       />
       
      <Layout
      leftPanel={<Map onLocationSelect={handleLocationSelect} />}

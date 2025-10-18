@@ -3,9 +3,11 @@ import styles from './Header.module.css';
 
 interface HeaderProps {
     onReportClick?: () => void;  
+    onThemeToggle: () => void;
+    isDarkMode: boolean;
 }
 
-export default function Header({ onReportClick }: HeaderProps) { 
+export default function Header({ onReportClick,onThemeToggle, isDarkMode  }: HeaderProps) { 
     return (
         <header className={styles.header}> 
             <div className={styles.headerLeft}>
@@ -15,11 +17,20 @@ export default function Header({ onReportClick }: HeaderProps) {
                     <p className={styles.subtitle}>Emergency Reporting System</p>
                 </div>    
             </div>       
+            <div className={styles.headerRight}>
+        <button 
+          className={styles.themeToggle}
+          onClick={onThemeToggle}
+          aria-label="Toggle theme"
+        >
+          {isDarkMode ? '☀️' : '🌙'}
+        </button>
             <button 
                 className={styles.headerButton} 
                 onClick={onReportClick}>  
                 + Report Incident
             </button>    
+            </div>
         </header>
     );
 }

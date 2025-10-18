@@ -10,7 +10,12 @@
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
-  
+  /* Modo oscuro para el header */
+ [data-theme="dark"] .header {
+  background: linear-gradient(to right, #1F2937, #374151);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+ }
+
   .headerLeft {
     display: flex;
     align-items: center;
@@ -71,6 +76,40 @@
   .headerButton:active {
     transform: translateY(0);
   }
+
+
+  /* Header Right - Container for buttons */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Theme Toggle Button */
+.themeToggle {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.themeToggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.themeToggle:active {
+  transform: scale(0.95);
+}
   
   /* Responsive */
   @media (max-width: 768px) {
