@@ -5,6 +5,8 @@ import './App.css';
 import Layout from './components/Layout/Layout';
 import Map from './components/Map/Map';
 import ReportForm from './components/ReportForm/ReportForm';
+import type { RiskLevel } from './types';
+import { useIncidents } from './hooks/useIncidents'; // ajusta ruta si hace falta
 
 
 function App() {
@@ -12,6 +14,16 @@ function App() {
   const [selectedLat, setSelectedLat] = useState(-33.4489);
   const [selectedLng, setSelectedLng] = useState(-70.6693);
   const [isDarkMode, setIsDarkMode] = useState (false)
+
+  const [selectedRisk, setSelectedRisk] = useState<RiskLevel>('medium');
+
+  const { incidents, addIncident } = useIncidents();
+
+
+  // Función para actualizar el riesgo seleccionado
+  const handleRiskLevelChange = (risk: RiskLevel) => {
+    setSelectedRisk(risk);
+  };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -53,8 +65,12 @@ function App() {
        />
       
      <Layout
-     leftPanel={<Map onLocationSelect={handleLocationSelect} />}
-     rightPanel={<ReportForm initialLat={selectedLat} initialLng={selectedLng} />}
+     leftPanel={<Map onLocationSelect={handleLocationSelect}
+     selectedRisk={selectedRisk}  
+     incidents={incidents}/>}
+     rightPanel={<ReportForm initialLat={selectedLat} initialLng={selectedLng}
+     onRiskLevelChange={handleRiskLevelChange} 
+     onSubmitIncident={addIncident} />}
      />
       <Footer />
     </div>
