@@ -1,73 +1,226 @@
-# React + TypeScript + Vite
+# 🔥 Alerta Fuego – Wildfire Incident Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Alerta Fuego** is an open-source web application for real-time wildfire reporting and emergency coordination. It empowers citizens and response authorities to collaboratively report and monitor wildfire incidents using accurate location, risk, and timestamp data.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 Project Objectives
 
-## React Compiler
+- Enable precise wildfire reporting through an interactive map
+- Visualize active incidents in real time
+- Automatically record timestamps and coordinates
+- Lay the foundation for authority validation and analytics
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ✨ MVP – Core Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🎯 Interface Structure
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Header**: Logo, dark/light mode toggle, quick report button
+- **Main UI**: Split screen layout
+  - Left: interactive map
+  - Right: report form + incident details
+- **Footer**: Educational disclaimer
+- **Responsive**: Mobile-friendly modals or vertical layout
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 🗺️ Interactive Map
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Custom markers showing active wildfires
+- Click-to-select location
+- HTML5 geolocation support
+- Automatic UTC + local timestamp
+- Incident popups (coordinates, time, risk level)
+
+### 📝 Public Reporting System
+
+- No login required
+- Smart report form:
+  - Pre-filled coordinates
+  - Auto-generated timestamp
+  - Description and risk level selection
+- Validation with React Hook Form + Zod
+- Instant feedback: loading, success, and error states
+
+### 🛢️ Database + Backend (Supabase)
+
+- `incidents` table with:
+  - `id`, `location` (PostGIS point), `timestamp_utc`, `risk_level`, `description`, `status`
+- Auto-generated REST API
+- Real-time updates via Supabase subscriptions
+- PostGIS support for future spatial analysis
+
+---
+
+## ⚙️ Tech Stack
+
+| Area           | Technology                      |
+| -------------- | ------------------------------- |
+| Frontend       | React 18, TypeScript, Vite      |
+| Maps           | Leaflet.js, React-Leaflet       |
+| Styling        | CSS Modules, CSS Variables      |
+| Forms          | React Hook Form, Zod            |
+| Geolocation    | HTML5 Geolocation API           |
+| Backend / DB   | Supabase (PostgreSQL + PostGIS) |
+| Realtime       | Supabase Subscriptions          |
+| Authentication | Supabase Auth _(planned)_       |
+| DevOps         | Vercel, GitHub                  |
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── components/           # Reusable UI components
+│   ├── Header/           # Top bar with theme toggle
+│   ├── Footer/           # Footer with disclaimer
+│   ├── Layout/           # Split layout container
+│   ├── Map/              # Leaflet map integration
+│   └── ReportForm/       # Form to report incidents
+├── types/                # Shared TypeScript types
+│   └── index.ts
+├── App.tsx               # Root component, central state
+├── App.css               # Global styles
+└── index.css             # CSS resets / base
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🔄 Data Flow
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+User clicks on map (Map.tsx)
+     ↓
+handleLocationSelect is triggered
+     ↓
+App.tsx updates state (selectedLat, selectedLng)
+     ↓
+Props passed to ReportForm (initialLat, initialLng)
+     ↓
+ReportForm.tsx uses useEffect to update form via setValue
+```
+
+### 🧱 Component Architecture
+
+```
+App.tsx (Central state management)
+├── Header/             # Theme toggle
+├── Layout/             # Grid container
+│   ├── Map/            # Interactive map (click handler)
+│   └── ReportForm/     # Zod-validated form
+└── Footer/             # Informational footer
+```
+
+### 🧭 Flow Diagram (Mermaid)
+
+```mermaid
+graph TD
+    A[User clicks on Map] --> B[handleLocationSelect in Map.tsx]
+    B --> C[Update state in App.tsx selectedLat, selectedLng]
+    C --> D[Pass props to ReportForm initialLat, initialLng]
+    D --> E[useEffect updates form via setValue]
+    E --> F[Form submission via Supabase REST API]
+    F --> G[Supabase inserts new incident in DB]
+    G --> H[Realtime subscription triggers map update]
+```
+
+---
+
+## 🚦 Feature Roadmap
+
+### ✅ MVP Completed
+
+- Public reporting (no login)
+- Real-time map with location capture
+- Risk level classification
+- Auto timestamps (UTC + local)
+- Form validation (Zod)
+- Responsive UI + dark mode
+
+### 🔜 Planned Features
+
+1. **Authority Mode**
+
+   - Login via Supabase Auth
+   - Role-based validation dashboard
+
+2. **Filters**
+
+   - By risk level, status, date range, or location
+
+3. **Timestamp Metadata**
+
+   - ISO 8601, epoch, timezone, IP, user agent
+
+4. **Notifications**
+
+   - Toasts, internal alerts, email triggers
+
+5. **UX/UI Enhancements**
+
+   - Transitions, custom icons, accessibility
+
+6. **Geospatial Analysis**
+
+   - Distance calculations, fire clusters, area coverage
+
+7. **Statistics + Exports**
+
+   - Graphs, reports, CSV/JSON export
+
+8. **Collaboration Tools**
+   - Per-incident comments, authority chat, audit logs
+
+---
+
+## 📦 Getting Started
+
+### Requirements
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/Luisal182/Alerta-Fuego.git
+cd Alerta-Fuego
+
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.example .env.local
+# ➤ Add your Supabase credentials
+
+# Run the dev server
+npm run dev
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! If you want to add a feature, report a bug, or improve documentation:
+
+1. Fork the project
+2. Create a branch (`git checkout -b feature/my-feature`)
+3. Commit your changes
+4. Push to your branch
+5. Open a Pull Request
+
+Feel free to open an issue to start a discussion.
+
+---
+
+## 📄 License
+
+Distributed under the MIT License.
+
+---
+
+## ✨ Credits
+
+Developed with ❤️ by **Luisal182**
+
+Deployed via [Vercel](https://vercel.com) | Open Source on [GitHub](https://github.com/Luisal182/Alerta-Fuego)

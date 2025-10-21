@@ -4,13 +4,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { reportFormSchema } from '../../types';
 import type { ReportFormData, RiskLevel } from '../../types';
 import styles from './ReportForm.module.css';
+import { supabase } from '../../lib/supabase';
 
 interface ReportFormProps {
-  initialLat?: number;
-  initialLng?: number;
+  initialLat: number;
+  initialLng: number;
+  onRiskLevelChange: (risk: RiskLevel) => void;
+  onSubmitIncident: (incident: {
+    latitude: number;
+    longitude: number;
+    description: string;
+    risk_level: string;
+  }) => void;
 }
 
-export default function ReportForm({ initialLat = -33.4489, initialLng = -70.6693 }: ReportFormProps) {
+
+export default function ReportForm({ initialLat = -33.4489, initialLng = -70.6693, onRiskLevelChange, onSubmitIncident }: ReportFormProps) {
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel>('medium');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -21,6 +30,7 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<ReportFormData>({
     resolver: zodResolver(reportFormSchema),
     defaultValues: {
@@ -37,20 +47,37 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
 
   const onSubmit = async (data: ReportFormData) => {
     setIsSubmitting(true);
-    
-    // Simulate API call
-    console.log('Form submitted:', data);
-    
-    // TODO: Replace with actual Supabase call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    alert('Report submitted successfully!');
+  
+    try {
+      await onSubmitIncident({
+        latitude: data.latitude,
+        longitude: data.longitude,
+        description: data.description,
+        risk_level: data.riskLevel,
+      });
+  
+      alert('✅ Reporte enviado con éxito');
+      reset({
+        latitude: initialLat,
+        longitude: initialLng,
+        riskLevel: 'medium',
+        description: '',
+      });
+      setSelectedRisk('medium');
+    } catch (error) {
+      alert('❌ Error al enviar el reporte');
+      console.error(error);
+    }
+  
     setIsSubmitting(false);
   };
+  
+  
 
   const handleRiskLevelClick = (level: RiskLevel) => {
     setSelectedRisk(level);
     setValue('riskLevel', level);
+    onRiskLevelChange?.(level);
   };
 
   return (
