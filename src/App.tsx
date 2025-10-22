@@ -11,13 +11,19 @@ import { useIncidents } from './hooks/useIncidents'; // ajusta ruta si hace falt
 
 function App() {
 
+  // Paso 1: Guardar el timestamp al iniciar la sesión (carga de la app)
+  const [sessionStartTime] = useState(() => new Date().toISOString());
+
+
   const [selectedLat, setSelectedLat] = useState(-33.4489);
   const [selectedLng, setSelectedLng] = useState(-70.6693);
   const [isDarkMode, setIsDarkMode] = useState (false)
 
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel>('medium');
 
-  const { incidents, addIncident } = useIncidents();
+  const { incidents, addIncident, recentIncidents } = useIncidents();
+
+  //console.log("Recent Incidents in session:", recentIncidents);
 
 
   // Función para actualizar el riesgo seleccionado
@@ -67,7 +73,7 @@ function App() {
      <Layout
      leftPanel={<Map onLocationSelect={handleLocationSelect}
      selectedRisk={selectedRisk}  
-     incidents={incidents}/>}
+     incidents={recentIncidents}/>}
      rightPanel={<ReportForm initialLat={selectedLat} initialLng={selectedLng}
      onRiskLevelChange={handleRiskLevelChange} 
      onSubmitIncident={addIncident} />}
