@@ -62,6 +62,18 @@ export default function Map({ onLocationSelect,selectedRisk }: MapProps) {
 
   // Carga inicial de incidentes
   useEffect(() => {
+        // Carga inicial
+        const fetchIncidents = async () => {
+          const { data, error } = await supabase.from('incidents').select('*');
+          if (error) {
+            console.error('Error loading incidents:', error);
+            return;
+          }
+          setIncidents(data || []);
+        };
+    
+        fetchIncidents();
+        
     const subscription = supabase
       .channel('public:incidents')
       .on(
@@ -113,7 +125,7 @@ export default function Map({ onLocationSelect,selectedRisk }: MapProps) {
             // Ajustamos nombres porque en la DB está snake_case
             const lat = Number(incident.latitude);
             const lng = Number(incident.longitude);
-            const risk = (incident.riskLevel || 'medium').toLowerCase();
+            const risk = (incident.risk_level || 'medium').toLowerCase();
 
             return (
               <CircleMarker

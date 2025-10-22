@@ -19,10 +19,12 @@ export type ReportFormData = z.infer<typeof reportFormSchema>;
 
 // Incident data type
 export interface Incident {
-  id: number;
+  id: string;
   latitude: number;
   longitude: number;
   description: string;
-  riskLevel: RiskLevel;
+  risk_level: RiskLevel;
   timestamp: string;
+  created_at: string;
+  updated_at: string;
 }
