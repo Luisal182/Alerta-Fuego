@@ -1,0 +1,138 @@
+.header {
+    background: linear-gradient(to right, #FF4444, #FF8C00);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  /* Modo oscuro para el header */
+ [data-theme="dark"] .header {
+  background: linear-gradient(to right, #1F2937, #374151);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+ }
+
+  .headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .logo {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  
+  .headerText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .title {
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+  }
+  
+  .subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    margin: 0;
+    line-height: 1;
+  }
+  
+  .headerButton {
+    background: white;
+    color: #FF4444;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  
+  .headerButton:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+  
+  .headerButton:active {
+    transform: translateY(0);
+  }
+
+
+  /* Header Right - Container for buttons */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Theme Toggle Button */
+.themeToggle {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.themeToggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.themeToggle:active {
+  transform: scale(0.95);
+}
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header {
+      padding: 0 24px;
+    }
+  
+    .logo {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+    }
+  
+    .title {
+      font-size: 20px;
+    }
+  
+    .subtitle {
+      font-size: 12px;
+    }
+  
+    .headerButton {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+  }
