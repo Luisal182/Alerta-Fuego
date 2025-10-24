@@ -1,10 +1,10 @@
-# 🔥 Alerta Fuego – Wildfire Incident Tracker
+# Alerta Fuego – Wildfire Incident Tracker
 
 **Alerta Fuego** is an open-source web application for real-time wildfire reporting and emergency coordination. It empowers citizens and response authorities to collaboratively report and monitor wildfire incidents using accurate location, risk, and timestamp data.
 
 ---
 
-## 📌 Project Objectives
+## Project Objectives
 
 - Enable precise wildfire reporting through an interactive map
 - Visualize active incidents in real time
@@ -13,9 +13,9 @@
 
 ---
 
-## ✨ MVP – Core Features
+## MVP – Core Features
 
-### 🎯 Interface Structure
+### Interface Structure
 
 - **Header**: Logo, dark/light mode toggle, quick report button
 - **Main UI**: Split screen layout
@@ -24,7 +24,7 @@
 - **Footer**: Educational disclaimer
 - **Responsive**: Mobile-friendly modals or vertical layout
 
-### 🗺️ Interactive Map
+### Interactive Map
 
 - Custom markers showing active wildfires
 - Click-to-select location
@@ -32,7 +32,7 @@
 - Automatic UTC + local timestamp
 - Incident popups (coordinates, time, risk level)
 
-### 📝 Public Reporting System
+### Public Reporting System
 
 - No login required
 - Smart report form:
@@ -42,7 +42,7 @@
 - Validation with React Hook Form + Zod
 - Instant feedback: loading, success, and error states
 
-### 🛢️ Database + Backend (Supabase)
+### Database + Backend (Supabase)
 
 - `incidents` table with:
   - `id`, `location` (PostGIS point), `timestamp_utc`, `risk_level`, `description`, `status`
@@ -52,7 +52,7 @@
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 | Area           | Technology                      |
 | -------------- | ------------------------------- |
@@ -68,7 +68,7 @@
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -85,7 +85,7 @@ src/
 └── index.css             # CSS resets / base
 ```
 
-### 🔄 Data Flow
+### Data Flow
 
 ```
 User clicks on map (Map.tsx)
@@ -99,7 +99,7 @@ Props passed to ReportForm (initialLat, initialLng)
 ReportForm.tsx uses useEffect to update form via setValue
 ```
 
-### 🧱 Component Architecture
+### Component Architecture
 
 ```
 App.tsx (Central state management)
@@ -110,7 +110,7 @@ App.tsx (Central state management)
 └── Footer/             # Informational footer
 ```
 
-### 🧭 Flow Diagram (Mermaid)
+### Flow Diagram (Mermaid)
 
 ```mermaid
 graph TD
@@ -125,7 +125,7 @@ graph TD
 
 ---
 
-## 🚦 Feature Roadmap
+## Feature Roadmap
 
 ### ✅ MVP Completed
 
@@ -172,7 +172,7 @@ graph TD
 
 ---
 
-## 📦 Getting Started
+## Getting Started
 
 ### Requirements
 
@@ -199,7 +199,7 @@ npm run dev
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! If you want to add a feature, report a bug, or improve documentation:
 
@@ -213,13 +213,13 @@ Feel free to open an issue to start a discussion.
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the MIT License.
 
 ---
 
-## ✨ Credits
+## Credits
 
 Developed with ❤️ by **Luisal182**
 
