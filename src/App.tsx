@@ -6,14 +6,10 @@ import Layout from './components/Layout/Layout';
 import Map from './components/Map/Map';
 import ReportForm from './components/ReportForm/ReportForm';
 import type { RiskLevel } from './types';
-import { useIncidents } from './hooks/useIncidents'; // ajusta ruta si hace falta
+import { useIncidents } from './hooks/useIncidents';
 
 
 function App() {
-
-  // Paso 1: Guardar el timestamp al iniciar la sesión (carga de la app)
-  const [sessionStartTime] = useState(() => new Date().toISOString());
-
 
   const [selectedLat, setSelectedLat] = useState(-33.4489);
   const [selectedLng, setSelectedLng] = useState(-70.6693);
@@ -26,7 +22,6 @@ function App() {
   //console.log("Recent Incidents in session:", recentIncidents);
 
 
-  // Función para actualizar el riesgo seleccionado
   const handleRiskLevelChange = (risk: RiskLevel) => {
     setSelectedRisk(risk);
   };
@@ -73,7 +68,7 @@ function App() {
      <Layout
      leftPanel={<Map onLocationSelect={handleLocationSelect}
      selectedRisk={selectedRisk}  
-     incidents={recentIncidents}/>}
+     incidents={incidents}/>}
      rightPanel={<ReportForm initialLat={selectedLat} initialLng={selectedLng}
      onRiskLevelChange={handleRiskLevelChange} 
      onSubmitIncident={addIncident} />}
