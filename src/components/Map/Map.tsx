@@ -1,14 +1,25 @@
-import { MapContainer, TileLayer, CircleMarker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';
 import type { Incident } from '../../types';
 import styles from './Map.module.css';
 import 'leaflet/dist/leaflet.css';
 import type { RiskLevel } from '../../types';
 
+
 interface MapProps {
   onLocationSelect?: (lat: number, lng: number) => void;
   selectedRisk?: RiskLevel;
   incidents: Incident[];
+  mapCenter?: [number, number];  
+}
+
+//To change the map center, After "use location"
+function ChangeMapView({ center }: { center: [number, number] }) {
+  const map = useMap();
+  map.flyTo(center, map.getZoom(), {
+    duration: 1.5 
+  });
+  return null;
 }
 
 // Component to handle map clicks
@@ -24,7 +35,7 @@ function MapClickHandler({ onLocationSelect }: { onLocationSelect?: (lat: number
   return null;
 }
 
-export default function Map({ onLocationSelect, selectedRisk, incidents }: MapProps) {
+export default function Map({ onLocationSelect, selectedRisk, incidents, mapCenter }: MapProps) {
   const center: LatLngExpression = [-33.4489, -70.6693]; // Santiago, Chile
   const zoom = 12;
 
@@ -65,6 +76,8 @@ export default function Map({ onLocationSelect, selectedRisk, incidents }: MapPr
 
       <div className={styles.mapWrapper}>
         <MapContainer center={center} zoom={zoom} className={styles.leafletMap} zoomControl={false}>
+          {/* Si hay nuevo centro, mover el mapa */}
+          {mapCenter && <ChangeMapView center={mapCenter} />}
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
