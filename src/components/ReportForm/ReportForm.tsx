@@ -15,10 +15,11 @@ interface ReportFormProps {
     description: string;
     risk_level: string;
   }) => void;
+  onLocationUpdate?: (lat: number, lng: number) => void;
 }
 
 
-export default function ReportForm({ initialLat = -33.4489, initialLng = -70.6693, onRiskLevelChange, onSubmitIncident }: ReportFormProps) {
+export default function ReportForm({ initialLat = -33.4489, initialLng = -70.6693, onRiskLevelChange, onSubmitIncident, onLocationUpdate }: ReportFormProps) {
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel>('medium');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -93,10 +94,9 @@ const handleGetLocation = () => {
       const { latitude, longitude } = position.coords;
       setValue('latitude', latitude);
       setValue('longitude', longitude);
-      
-      // También actualizar el mapa si tienes callback
-      // onLocationUpdate?.(latitude, longitude);
-      
+      // Notificar para centrar el mapa
+      onLocationUpdate?.(latitude, longitude);
+    
       setIsGettingLocation(false);
     },
     (error) => {

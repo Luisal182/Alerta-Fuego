@@ -14,12 +14,17 @@ function App() {
   const [selectedLat, setSelectedLat] = useState(-33.4489);
   const [selectedLng, setSelectedLng] = useState(-70.6693);
   const [isDarkMode, setIsDarkMode] = useState (false)
-
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel>('medium');
-
   const { incidents, addIncident, recentIncidents } = useIncidents();
+  const [mapCenter, setMapCenter] = useState<[number, number] | undefined>(undefined);
 
-  //console.log("Recent Incidents in session:", recentIncidents);
+ 
+  // New to handle "Use My Location"
+const handleUseMyLocation = (lat: number, lng: number) => {
+  setSelectedLat(lat);
+  setSelectedLng(lng);
+  setMapCenter([lat, lng]);
+};
 
 
   const handleRiskLevelChange = (risk: RiskLevel) => {
@@ -68,11 +73,17 @@ function App() {
      <Layout
      leftPanel={<Map onLocationSelect={handleLocationSelect}
      selectedRisk={selectedRisk}  
-     incidents={incidents}/>}
+     incidents={incidents}
+     mapCenter={mapCenter}
+     />
+    }
      rightPanel={<ReportForm initialLat={selectedLat} initialLng={selectedLng}
      onRiskLevelChange={handleRiskLevelChange} 
-     onSubmitIncident={addIncident} />}
+     onSubmitIncident={addIncident}
+     onLocationUpdate={handleUseMyLocation}
      />
+    }
+    />
       <Footer />
     </div>
   );
