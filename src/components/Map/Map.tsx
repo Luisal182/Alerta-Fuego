@@ -4,6 +4,7 @@ import type { Incident } from '../../types';
 import styles from './Map.module.css';
 import 'leaflet/dist/leaflet.css';
 import type { RiskLevel } from '../../types';
+import FilterBar from '../FilterBar/FilterBar';
 
 
 interface MapProps {
@@ -11,7 +12,9 @@ interface MapProps {
   selectedRisk?: RiskLevel;
   incidents: Incident[];
   mapCenter?: [number, number];  
-}
+  timeFilter: 'all' | '30min' | '1h' | 'today'; // 👈 nueva
+  onTimeFilterChange: (filter: 'all' | '30min' | '1h' | 'today') => void; // 👈 nueva
+ }
 
 //To change the map center, After "use location"
 function ChangeMapView({ center }: { center: [number, number] }) {
@@ -35,7 +38,7 @@ function MapClickHandler({ onLocationSelect }: { onLocationSelect?: (lat: number
   return null;
 }
 
-export default function Map({ onLocationSelect, selectedRisk, incidents, mapCenter }: MapProps) {
+export default function Map({ onLocationSelect, incidents, mapCenter, timeFilter,onTimeFilterChange }: MapProps) {
   const center: LatLngExpression = [-33.4489, -70.6693]; // Santiago, Chile
   const zoom = 12;
 
@@ -72,8 +75,11 @@ export default function Map({ onLocationSelect, selectedRisk, incidents, mapCent
       <div className={styles.mapHeader}>
         <span className={styles.mapHeaderIcon}>🗺️</span>
         <h2 className={styles.mapHeaderTitle}>Incident Map</h2>
+            <FilterBar 
+            timeFilter={timeFilter}
+            onTimeFilterChange={onTimeFilterChange}
+           />
       </div>
-
       <div className={styles.mapWrapper}>
         <MapContainer center={center} zoom={zoom} className={styles.leafletMap} zoomControl={false}>
           {/* Si hay nuevo centro, mover el mapa */}

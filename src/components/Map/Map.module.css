@@ -10,8 +10,9 @@
     height: 60px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 24px;
-    gap: 12px;
+    gap: 20px;
     flex-shrink: 0;
     transition: background 0.3s ease;
   }
@@ -23,6 +24,9 @@
   .mapHeaderIcon {
     font-size: 24px;
     color: white;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
   }
   
   [data-theme="dark"] .mapHeaderIcon {
@@ -34,6 +38,9 @@
     font-size: 20px;
     font-weight: 700;
     margin: 0;
+    display: flex;
+  align-items: center;
+  height: 10px;
   }
   
   [data-theme="dark"] .mapHeaderTitle {
@@ -127,8 +134,13 @@
   /* Responsive */
   @media (max-width: 768px) {
     .mapHeader {
-      height: 50px;
       padding: 0 16px;
+      gap: 8px;
+    }
+  
+    .mapHeader > div:first-child {
+      height: 50px;
+      gap: 8px;
     }
   
     .mapHeaderTitle {

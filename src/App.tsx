@@ -17,6 +17,8 @@ function App() {
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel>('medium');
   const { incidents, addIncident, recentIncidents } = useIncidents();
   const [mapCenter, setMapCenter] = useState<[number, number] | undefined>(undefined);
+  const [timeFilter, setTimeFilter] = useState<'all' | '30min' | '1h' | 'today'>('all');
+
 
  
   // New to handle "Use My Location"
@@ -30,6 +32,29 @@ const handleUseMyLocation = (lat: number, lng: number) => {
   const handleRiskLevelChange = (risk: RiskLevel) => {
     setSelectedRisk(risk);
   };
+
+  // Función para filtrar incidentes por tiempo
+const getFilteredIncidents = () => {
+  const now = new Date();
+  
+  switch(timeFilter) {
+    case '30min':
+      return incidents.filter(inc => 
+        new Date(inc.created_at) > new Date(now.getTime() - 30 * 60 * 1000)
+      );
+    case '1h':
+      return incidents.filter(inc => 
+        new Date(inc.created_at) > new Date(now.getTime() - 60 * 60 * 1000)
+      );
+    case 'today':
+      const startOfDay = new Date(now.setHours(0,0,0,0));
+      return incidents.filter(inc => 
+        new Date(inc.created_at) > startOfDay
+      );
+    default:
+      return incidents;
+  }
+};
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -73,8 +98,11 @@ const handleUseMyLocation = (lat: number, lng: number) => {
      <Layout
      leftPanel={<Map onLocationSelect={handleLocationSelect}
      selectedRisk={selectedRisk}  
-     incidents={incidents}
+     //incidents={incidents}
+     incidents={getFilteredIncidents()} 
      mapCenter={mapCenter}
+     timeFilter={timeFilter}
+  onTimeFilterChange={setTimeFilter}
      />
     }
      rightPanel={<ReportForm initialLat={selectedLat} initialLng={selectedLng}
