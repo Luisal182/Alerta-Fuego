@@ -1,0 +1,101 @@
+.filterBar {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 10px;
+  }
+  
+  .filterGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .filterLabel {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+  }
+  
+  [data-theme="dark"] .filterLabel {
+    color: var(--text-primary);
+  }
+  
+  .filterSelect {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 130px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    font-family: inherit;
+  }
+  
+  .filterSelect:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .filterSelect:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  }
+  
+  .filterSelect option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+  
+  /* Dark mode */
+  [data-theme="dark"] .filterSelect {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  [data-theme="dark"] .filterSelect:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  [data-theme="dark"] .filterSelect:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .filterBar {
+      margin-left: 0;
+      width: 100%;
+    }
+  
+    .filterGroup {
+      width: 100%;
+      gap: 8px;
+    }
+  
+    .filterLabel {
+      font-size: 13px;
+    }
+  
+    .filterSelect {
+      flex: 1;
+      min-width: auto;
+      font-size: 12px;
+    }
+  }

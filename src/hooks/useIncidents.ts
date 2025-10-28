@@ -4,11 +4,12 @@ import type { Incident } from '../types';
 
 export function useIncidents() {
   const [incidents, setIncidents] = useState<Incident[]>([]);
-
+  
   // Guardamos el momento en que inicia la sesión de la app
   const sessionStartTime = new Date().toISOString();
 
   useEffect(() => {
+    // Fetch inicial de incidentes
     const fetchIncidents = async () => {
       const { data, error } = await supabase
         .from('incidents')
@@ -23,6 +24,38 @@ export function useIncidents() {
     };
 
     fetchIncidents();
+
+    // Suscripción en tiempo real
+    const subscription = supabase
+      .channel('public:incidents')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'incidents' },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            const newIncident = payload.new as Incident;
+            setIncidents(current => [newIncident, ...current]);
+          } else if (payload.eventType === 'UPDATE') {
+            const updatedIncident = payload.new as Incident;
+            setIncidents(current =>
+              current.map(inc =>
+                inc.id === updatedIncident.id ? updatedIncident : inc
+              )
+            );
+          } else if (payload.eventType === 'DELETE') {
+            const deletedIncident = payload.old as Incident;
+            setIncidents(current =>
+              current.filter(inc => inc.id !== deletedIncident.id)
+            );
+          }
+        }
+      )
+      .subscribe();
+
+    // Cleanup al desmontar
+    return () => {
+      supabase.removeChannel(subscription);
+    };
   }, []);
 
   const addIncident = async (incident: {
@@ -38,23 +71,21 @@ export function useIncidents() {
 
     if (error) {
       console.error('Error inserting incident:', error);
-      return null;
+      throw error;
     }
 
-    if (data) {
-      setIncidents((prev) => [data[0], ...prev]);
-      return data[0];
-    }
+    return data?.[0] || null;
+    // No actualizamos el estado aquí porque la suscripción lo hará
   };
 
-  // 🔥 Filtro: incidentes desde que se abrió la app
+  // Filtro: incidentes desde que se abrió la app
   const recentIncidents = incidents.filter((incident) => {
     return new Date(incident.created_at) > new Date(sessionStartTime);
   });
 
   return {
     incidents,
-    recentIncidents, // <-- ¡este lo usaremos en tu componente de Map!
+    recentIncidents,
     setIncidents,
     addIncident,
   };

@@ -1,16 +1,28 @@
-import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';
-import { supabase } from '../../lib/supabase';
 import type { Incident } from '../../types';
 import styles from './Map.module.css';
 import 'leaflet/dist/leaflet.css';
 import type { RiskLevel } from '../../types';
+import FilterBar from '../FilterBar/FilterBar';
+
 
 interface MapProps {
   onLocationSelect?: (lat: number, lng: number) => void;
   selectedRisk?: RiskLevel;
   incidents: Incident[];
+  mapCenter?: [number, number];  
+  timeFilter: 'all' | '30min' | '1h' | 'today'; // 👈 nueva
+  onTimeFilterChange: (filter: 'all' | '30min' | '1h' | 'today') => void; // 👈 nueva
+ }
+
+//To change the map center, After "use location"
+function ChangeMapView({ center }: { center: [number, number] }) {
+  const map = useMap();
+  map.flyTo(center, map.getZoom(), {
+    duration: 1.5 
+  });
+  return null;
 }
 
 // Component to handle map clicks
@@ -26,13 +38,11 @@ function MapClickHandler({ onLocationSelect }: { onLocationSelect?: (lat: number
   return null;
 }
 
-export default function Map({ onLocationSelect,selectedRisk }: MapProps) {
+export default function Map({ onLocationSelect, incidents, mapCenter, timeFilter,onTimeFilterChange }: MapProps) {
   const center: LatLngExpression = [-33.4489, -70.6693]; // Santiago, Chile
   const zoom = 12;
 
-  const [incidents, setIncidents] = useState<Incident[]>([]);
-
-  // Convierte el riesgo a color para marcador
+  // Change risk in to a color for the marker
   const getRiskColor = (risk: string) => {
     switch (risk) {
       case 'high':
@@ -46,7 +56,7 @@ export default function Map({ onLocationSelect,selectedRisk }: MapProps) {
     }
   };
 
-  // Convierte el riesgo a tamaño para marcador
+  // conversion the risk in to a size for the circle/marker
   const getRiskRadius = (risk: string) => {
     switch (risk) {
       case 'high':
@@ -60,60 +70,20 @@ export default function Map({ onLocationSelect,selectedRisk }: MapProps) {
     }
   };
 
-  // Carga inicial de incidentes
-  useEffect(() => {
-        // Carga inicial
-        const fetchIncidents = async () => {
-          const { data, error } = await supabase.from('incidents').select('*');
-          if (error) {
-            console.error('Error loading incidents:', error);
-            return;
-          }
-          setIncidents(data || []);
-        };
-    
-        fetchIncidents();
-        
-    const subscription = supabase
-      .channel('public:incidents')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'incidents' },
-        (payload) => {
-          setIncidents((current) => {
-            const newIncident = payload.new as Incident;
-            const oldIncident = payload.old as Incident;
-            switch (payload.eventType) {
-              case 'INSERT':
-                return [newIncident, ...current];
-              case 'UPDATE':
-                return current.map((inc) =>
-                  inc.id === newIncident.id ? newIncident : inc
-                );
-              case 'DELETE':
-                return current.filter((inc) => inc.id !== oldIncident.id);
-              default:
-                return current;
-            }
-          });
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(subscription);
-    };
-  }, []);
-
   return (
     <div className={styles.mapContainer}>
       <div className={styles.mapHeader}>
         <span className={styles.mapHeaderIcon}>🗺️</span>
         <h2 className={styles.mapHeaderTitle}>Incident Map</h2>
+            <FilterBar 
+            timeFilter={timeFilter}
+            onTimeFilterChange={onTimeFilterChange}
+           />
       </div>
-
       <div className={styles.mapWrapper}>
         <MapContainer center={center} zoom={zoom} className={styles.leafletMap} zoomControl={false}>
+          {/* Si hay nuevo centro, mover el mapa */}
+          {mapCenter && <ChangeMapView center={mapCenter} />}
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -122,7 +92,6 @@ export default function Map({ onLocationSelect,selectedRisk }: MapProps) {
           <MapClickHandler onLocationSelect={onLocationSelect} />
 
           {incidents.map((incident) => {
-            // Ajustamos nombres porque en la DB está snake_case
             const lat = Number(incident.latitude);
             const lng = Number(incident.longitude);
             const risk = (incident.risk_level || 'medium').toLowerCase();

@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { reportFormSchema } from '../../types';
 import type { ReportFormData, RiskLevel } from '../../types';
 import styles from './ReportForm.module.css';
-import { supabase } from '../../lib/supabase';
 
 interface ReportFormProps {
   initialLat: number;
@@ -16,10 +15,11 @@ interface ReportFormProps {
     description: string;
     risk_level: string;
   }) => void;
+  onLocationUpdate?: (lat: number, lng: number) => void;
 }
 
 
-export default function ReportForm({ initialLat = -33.4489, initialLng = -70.6693, onRiskLevelChange, onSubmitIncident }: ReportFormProps) {
+export default function ReportForm({ initialLat = -33.4489, initialLng = -70.6693, onRiskLevelChange, onSubmitIncident, onLocationUpdate }: ReportFormProps) {
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel>('medium');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -72,13 +72,42 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
     setIsSubmitting(false);
   };
   
-  
-
   const handleRiskLevelClick = (level: RiskLevel) => {
     setSelectedRisk(level);
     setValue('riskLevel', level);
     onRiskLevelChange?.(level);
   };
+
+const [isGettingLocation, setIsGettingLocation] = useState(false);
+// New funct to get location
+const handleGetLocation = () => {
+  setIsGettingLocation(true);
+  
+  if (!navigator.geolocation) {
+    alert('Geolocation not supported by your browser');
+    setIsGettingLocation(false);
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      setValue('latitude', latitude);
+      setValue('longitude', longitude);
+      // Notificar para centrar el mapa
+      onLocationUpdate?.(latitude, longitude);
+    
+      setIsGettingLocation(false);
+    },
+    (error) => {
+      alert(`Error getting location: ${error.message}`);
+      setIsGettingLocation(false);
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+};
+
+
 
   return (
     <div className={styles.formContainer}>
@@ -87,6 +116,27 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
         <span className={styles.formHeaderIcon}>⚠️</span>
         <h2 className={styles.formHeaderTitle}>Report New Incident</h2>
       </div>
+      {/* Location Button */}
+       <div className={styles.locationButtonWrapper}>
+          <button
+         type="button"
+          className={styles.locationButton}
+           onClick={handleGetLocation}
+             disabled={isGettingLocation}
+  >
+            {isGettingLocation ? (
+               <>
+             <span className={styles.spinner}></span>
+           <span>Getting location...</span>
+         </>
+          ) : (
+            <>
+             <span>📍</span>
+            <span>Use My Location</span>
+           </>
+          )}
+       </button>
+          </div>
 
       {/* Form Body */}
       <div className={styles.formBody}>
