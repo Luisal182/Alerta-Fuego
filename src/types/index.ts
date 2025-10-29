@@ -2,6 +2,11 @@ import { z } from 'zod';
 
 // Risk levels
 export type RiskLevel = 'low' | 'medium' | 'high';
+// Status types
+export type IncidentStatus = 'pending' | 'in_progress' | 'resolved';
+
+// Assistance types
+export type AssistanceType = 'police' | 'firefighter' | 'medical' | 'helicopter' | 'rescue';
 
 // Report form schema
 export const reportFormSchema = z.object({
@@ -27,4 +32,7 @@ export interface Incident {
   timestamp: string;
   created_at: string;
   updated_at: string;
+  status: IncidentStatus;
+  assistance_type?: AssistanceType | null;
+  dispatched_resources?: string[] | null;
 }
