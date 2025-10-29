@@ -1,0 +1,126 @@
+.dashboardContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg-primary);
+  }
+  
+  .dashboardHeader {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: white;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  [data-theme="dark"] .dashboardHeader {
+    background: linear-gradient(to right, #1F2937, #374151);
+  }
+  
+  .dashboardTitle {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  
+  .userInfo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .userEmail {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+  
+  .logoutButton {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .logoutButton:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .dashboardContent {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+  }
+  
+  [data-theme="dark"] .card {
+    background: var(--bg-secondary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .card h2 {
+    margin: 0 0 16px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  
+  .card p {
+    margin: 0 0 12px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+  
+  .card ul {
+    margin: 12px 0 0 20px;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .card li {
+    margin: 8px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+  
+  .card li:before {
+    content: "✓ ";
+    color: #4ADE80;
+    font-weight: 600;
+    margin-right: 8px;
+  }
+  
+  @media (max-width: 768px) {
+    .dashboardHeader {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+  
+    .userInfo {
+      flex-direction: column;
+      width: 100%;
+    }
+  
+    .dashboardContent {
+      padding: 16px;
+    }
+  
+    .card {
+      padding: 16px;
+    }
+  }
