@@ -57,51 +57,86 @@
     flex: 1;
     overflow-y: auto;
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
   
-  .card {
+  .errorMessage {
+    padding: 16px;
+    background: #fee;
+    color: #c33;
+    border-radius: 8px;
+    border-left: 4px solid #c33;
+  }
+  
+  [data-theme="dark"] .errorMessage {
+    background: rgba(255, 100, 100, 0.1);
+    color: #ff6464;
+    border-left-color: #ff6464;
+  }
+  
+  .filtersBar {
+    display: flex;
+    gap: 16px;
+    align-items: center;
     background: white;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
+    padding: 16px;
+    border-radius: 8px;
+    flex-wrap: wrap;
   }
   
-  [data-theme="dark"] .card {
+  [data-theme="dark"] .filtersBar {
     background: var(--bg-secondary);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
   
-  .card h2 {
-    margin: 0 0 16px 0;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-primary);
+  .filterGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   
-  .card p {
-    margin: 0 0 12px 0;
-    color: var(--text-secondary);
-    font-size: 14px;
-  }
-  
-  .card ul {
-    margin: 12px 0 0 20px;
-    padding: 0;
-    list-style: none;
-  }
-  
-  .card li {
-    margin: 8px 0;
-    color: var(--text-secondary);
-    font-size: 14px;
-  }
-  
-  .card li:before {
-    content: "✓ ";
-    color: #4ADE80;
+  .filterGroup label {
     font-weight: 600;
-    margin-right: 8px;
+    font-size: 13px;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+  
+  .filterSelect {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    background: white;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  [data-theme="dark"] .filterSelect {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+  }
+  
+  .filterSelect:hover {
+    border-color: #667eea;
+  }
+  
+  .filterSelect:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  .countBadge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: auto;
   }
   
   @media (max-width: 768px) {
@@ -116,11 +151,30 @@
       width: 100%;
     }
   
-    .dashboardContent {
-      padding: 16px;
+    .dashboardTitle {
+      font-size: 24px;
     }
   
-    .card {
+    .dashboardContent {
       padding: 16px;
+      gap: 16px;
+    }
+  
+    .filtersBar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .filterGroup {
+      width: 100%;
+    }
+  
+    .filterSelect {
+      width: 100%;
+    }
+  
+    .countBadge {
+      margin-left: 0;
+      text-align: center;
     }
   }

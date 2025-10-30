@@ -1,15 +1,37 @@
+import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useDashboardIncidents } from '../../hooks/useDashboardIncidents';
+import IncidentsTable from '../../components/IncidentsTable/IncidentsTable';
 import styles from './DashboardPage.module.css';
 
 export default function DashboardPage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const {
+    incidents,
+    loading,
+    error,
+    updateStatus,
+    updateAssistanceType,
+    dispatchResources,
+    deleteIncident,
+  } = useDashboardIncidents();
+
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [riskFilter, setRiskFilter] = useState<string | null>(null);
 
   const handleLogout = async () => {
     await logout();
     navigate('/login', { replace: true });
   };
+
+  // Filtrar incidents
+  const filteredIncidents = incidents.filter(incident => {
+    if (statusFilter && incident.status !== statusFilter) return false;
+    if (riskFilter && incident.risk_level !== riskFilter) return false;
+    return true;
+  });
 
   return (
     <div className={styles.dashboardContainer}>
@@ -27,18 +49,56 @@ export default function DashboardPage() {
       </div>
 
       <div className={styles.dashboardContent}>
-        <div className={styles.card}>
-          <h2>Reports Management</h2>
-          <p>Coming soon...</p>
-          <p>Here you will manage:</p>
-          <ul>
-            <li>View pending reports</li>
-            <li>Change status (pending → in_progress → resolved)</li>
-            <li>Select assistance type (police, firefighter, medical, helicopter, rescue)</li>
-            <li>Dispatch resources</li>
-            <li>Delete false reports</li>
-          </ul>
+        {error && (
+          <div className={styles.errorMessage}>
+            ❌ {error}
+          </div>
+        )}
+
+        {/* Filtros */}
+        <div className={styles.filtersBar}>
+          <div className={styles.filterGroup}>
+            <label>Status:</label>
+            <select
+              value={statusFilter || ''}
+              onChange={(e) => setStatusFilter(e.target.value || null)}
+              className={styles.filterSelect}
+            >
+              <option value="">All</option>
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+
+          <div className={styles.filterGroup}>
+            <label>Risk Level:</label>
+            <select
+              value={riskFilter || ''}
+              onChange={(e) => setRiskFilter(e.target.value || null)}
+              className={styles.filterSelect}
+            >
+              <option value="">All</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+
+          <span className={styles.countBadge}>
+            {filteredIncidents.length} incident{filteredIncidents.length !== 1 ? 's' : ''}
+          </span>
         </div>
+
+        {/* Tabla */}
+        <IncidentsTable
+          incidents={filteredIncidents}
+          loading={loading}
+          onStatusChange={updateStatus}
+          onAssistanceTypeChange={updateAssistanceType}
+          onDispatchResources={dispatchResources}
+          onDelete={deleteIncident}
+        />
       </div>
     </div>
   );
