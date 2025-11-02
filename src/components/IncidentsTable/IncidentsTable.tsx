@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Incident } from '../../types';
 import styles from './IncidentsTable.module.css';
+import toast from 'react-hot-toast';
 
 interface IncidentsTableProps {
   incidents: Incident[];
@@ -25,6 +26,9 @@ export default function IncidentsTable({
 }: IncidentsTableProps) {
   const [showResourceModal, setShowResourceModal] = useState<string | null>(null);
   const [selectedResources, setSelectedResources] = useState<string[]>([]);
+  // ⭐ NUEVOS ESTADOS para tracking
+  const [updatingRows, setUpdatingRows] = useState<Set<string>>(new Set());
+  const [deletingRows, setDeletingRows] = useState<Set<string>>(new Set());
 
   if (loading) {
     return <div className={styles.loading}>Loading incidents...</div>;
@@ -73,14 +77,89 @@ export default function IncidentsTable({
     );
   };
 
+  // ⭐ FUNCIÓN MODIFICADA - Añadido toast
   const handleResourceSave = async () => {
     if (showResourceModal) {
-      await onDispatchResources(showResourceModal, selectedResources);
-      setShowResourceModal(null);
-      setSelectedResources([]);
+      try {
+        await onDispatchResources(showResourceModal, selectedResources);
+        toast.success('Resources dispatched! 📡');
+        setShowResourceModal(null);
+        setSelectedResources([]);
+      } catch (error) {
+        toast.error('Failed to dispatch resources');
+      }
+    }
+  };
+  // ⭐ NUEVA FUNCIÓN - Status con toast y loading
+  const handleStatusChangeWithToast = async (id: string, status: string) => {
+    setUpdatingRows(prev => new Set(prev).add(id));
+    try {
+      await onStatusChange(id, status);
+      toast.success(`Status updated to ${status}`);
+    } catch (error) {
+      toast.error('Failed to update status');
+    } finally {
+      setUpdatingRows(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     }
   };
 
+  // ⭐ NUEVA FUNCIÓN - Delete con confirmación toast
+  const handleDeleteWithToast = async (id: string) => {
+    toast((t) => (
+      <div>
+        <p style={{ margin: '0 0 12px 0' }}>🗑️ Delete this incident?</p>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id);
+              setDeletingRows(prev => new Set(prev).add(id));
+              try {
+                await onDelete(id);
+                toast.success('Incident deleted');
+              } catch (error) {
+                toast.error('Failed to delete incident');
+              } finally {
+                setDeletingRows(prev => {
+                  const next = new Set(prev);
+                  next.delete(id);
+                  return next;
+                });
+              }
+            }}
+            style={{
+              background: '#F56565',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '4px 12px',
+              cursor: 'pointer'
+            }}
+          >
+            Delete
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            style={{
+              background: '#CBD5E0',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '4px 12px',
+              cursor: 'pointer'
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    ), {
+      duration: 10000,
+    });
+  };
+  
   return (
     <div className={styles.tableContainer}>
       <table className={styles.table}>
@@ -99,7 +178,13 @@ export default function IncidentsTable({
         </thead>
         <tbody>
           {incidents.map((incident) => (
-            <tr key={incident.id} className={styles.row}>
+            <tr key={incident.id} className={styles.row}
+            style={{ 
+              opacity: (updatingRows.has(incident.id) || deletingRows.has(incident.id)) ? 0.5 : 1,
+              transition: 'opacity 0.3s ease'
+            }}
+          >
+              
               <td className={styles.id}>{incident.id.slice(0, 8)}...</td>
               
               <td className={styles.location}>
@@ -123,7 +208,8 @@ export default function IncidentsTable({
                 <select
                   className={`${styles.select} ${getStatusBadgeClass(incident.status)}`}
                   value={incident.status}
-                  onChange={(e) => onStatusChange(incident.id, e.target.value)}
+                  onChange={(e) => handleStatusChangeWithToast(incident.id, e.target.value)}
+                  disabled={updatingRows.has(incident.id)}
                 >
                   {STATUS_OPTIONS.map(status => (
                     <option key={status} value={status}>
@@ -169,16 +255,13 @@ export default function IncidentsTable({
               </td>
 
               <td className={styles.actions}>
-                <button
+              <button
                   className={styles.deleteBtn}
-                  onClick={() => {
-                    if (confirm('Are you sure you want to delete this incident?')) {
-                      onDelete(incident.id);
-                    }
-                  }}
+                  onClick={() => handleDeleteWithToast(incident.id)}
                   title="Delete"
+                  disabled={deletingRows.has(incident.id)}
                 >
-                  🗑️
+                  {deletingRows.has(incident.id) ? '⏳' : '🗑️'}
                 </button>
               </td>
             </tr>
