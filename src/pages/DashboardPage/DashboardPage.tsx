@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDashboardIncidents } from '../../hooks/useDashboardIncidents';
 import IncidentsTable from '../../components/IncidentsTable/IncidentsTable';
 import styles from './DashboardPage.module.css';
+import toast from 'react-hot-toast';
 
 export default function DashboardPage() {
   const { user, logout } = useAuth();
@@ -22,8 +23,13 @@ export default function DashboardPage() {
   const [riskFilter, setRiskFilter] = useState<string | null>(null);
 
   const handleLogout = async () => {
-    await logout();
-    navigate('/login', { replace: true });
+    try {
+      await logout();
+      toast.success('Logged out successfully');
+      navigate('/login', { replace: true });
+    } catch (error) {
+      toast.error('Logout failed');
+    }
   };
 
   // Filtrar incidents

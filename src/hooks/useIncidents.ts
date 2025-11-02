@@ -4,12 +4,11 @@ import type { Incident } from '../types';
 
 export function useIncidents() {
   const [incidents, setIncidents] = useState<Incident[]>([]);
-  
-  // Guardamos el momento en que inicia la sesión de la app
+
   const sessionStartTime = new Date().toISOString();
 
   useEffect(() => {
-    // Fetch inicial de incidentes
+    // initial Fetch of "all" the incidents
     const fetchIncidents = async () => {
       const { data, error } = await supabase
         .from('incidents')
@@ -25,7 +24,7 @@ export function useIncidents() {
 
     fetchIncidents();
 
-    // Suscripción en tiempo real
+    // Subsc in real time
     const subscription = supabase
       .channel('public:incidents')
       .on(
@@ -52,7 +51,7 @@ export function useIncidents() {
       )
       .subscribe();
 
-    // Cleanup al desmontar
+    // Cleanup on unmount
     return () => {
       supabase.removeChannel(subscription);
     };
@@ -75,10 +74,9 @@ export function useIncidents() {
     }
 
     return data?.[0] || null;
-    // No actualizamos el estado aquí porque la suscripción lo hará
   };
 
-  // Filtro: incidentes desde que se abrió la app
+  // Filter incidents created after session start time
   const recentIncidents = incidents.filter((incident) => {
     return new Date(incident.created_at) > new Date(sessionStartTime);
   });

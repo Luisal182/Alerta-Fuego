@@ -2,29 +2,34 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import styles from './LoginPage.module.css';
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login, loading, error } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [localError, setLocalError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+
+   // ⭐ FUNCIÓN MODIFICADA - Sin localError, usando toasts
+   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLocalError('');
 
     if (!email || !password) {
-      setLocalError('Email and password are required');
+      // ⭐ CAMBIO: setLocalError → toast
+      toast.error('Email and password are required');
       return;
     }
 
     const result = await login(email, password);
 
     if (result.success) {
+      // ⭐ NUEVO: Toast de éxito
+      toast.success('Welcome back! 🎉');
       navigate('/dashboard', { replace: true });
     } else {
-      setLocalError(result.error || 'Login failed');
+      // ⭐ CAMBIO: setLocalError → toast
+      toast.error(result.error || 'Login failed');
     }
   };
 
@@ -63,9 +68,10 @@ export default function LoginPage() {
             />
           </div>
 
-          {(error || localError) && (
+        {/* ⭐ OPCIONAL: Puedes mantener o eliminar este div de error */}
+        {error && (
             <div className={styles.errorMessage}>
-              ❌ {error || localError}
+              ❌ {error}
             </div>
           )}
 
