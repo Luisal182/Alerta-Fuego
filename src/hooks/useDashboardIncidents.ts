@@ -7,7 +7,7 @@ export const useDashboardIncidents = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch inicial de todos los incidents
+  // inicial  Fetch of all the incidents
   const fetchIncidents = async () => {
     setLoading(true);
     try {
@@ -31,7 +31,7 @@ export const useDashboardIncidents = () => {
   useEffect(() => {
     fetchIncidents();
 
-    // Suscripción en tiempo real
+    // Subscription in real time
     const subscription = supabase
       .channel('incidents-changes')
       .on(
@@ -66,13 +66,12 @@ export const useDashboardIncidents = () => {
         console.log('Subscription status:', status);
       });
 
-    // Cleanup
+
     return () => {
       supabase.removeChannel(subscription);
     };
   }, []);
 
-  // Actualizar status
   const updateStatus = async (id: string, status: string) => {
     try {
       const { error } = await supabase
@@ -85,7 +84,7 @@ export const useDashboardIncidents = () => {
         throw error;
       }
 
-      // Forzar actualización local inmediatamente
+      //Force actualitation inmediatly 
       setIncidents(current =>
         current.map(inc =>
           inc.id === id ? { ...inc, status: status as any, updated_at: new Date().toISOString() } : inc
@@ -100,7 +99,6 @@ export const useDashboardIncidents = () => {
     }
   };
 
-  // Actualizar assistance_type
   const updateAssistanceType = async (id: string, assistanceType: string) => {
     try {
       const { error } = await supabase
@@ -113,7 +111,7 @@ export const useDashboardIncidents = () => {
         throw error;
       }
 
-      // Forzar actualización local inmediatamente
+      // Force updadete inmediatly
       setIncidents(current =>
         current.map(inc =>
           inc.id === id ? { ...inc, assistance_type: assistanceType as any, updated_at: new Date().toISOString() } : inc
@@ -128,7 +126,6 @@ export const useDashboardIncidents = () => {
     }
   };
 
-  // Despachar recursos
   const dispatchResources = async (id: string, resources: string[]) => {
     try {
       const { error } = await supabase
@@ -159,7 +156,7 @@ export const useDashboardIncidents = () => {
     }
   };
 
-  // Borrar incident
+  // DELETE incident
   const deleteIncident = async (id: string) => {
     try {
       const { error } = await supabase
@@ -172,7 +169,6 @@ export const useDashboardIncidents = () => {
         throw error;
       }
 
-      // Forzar actualización local inmediatamente
       setIncidents(current =>
         current.filter(inc => inc.id !== id)
       );

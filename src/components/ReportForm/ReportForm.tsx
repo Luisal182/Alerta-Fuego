@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { reportFormSchema } from '../../types';
 import type { ReportFormData, RiskLevel } from '../../types';
 import styles from './ReportForm.module.css';
+import toast from 'react-hot-toast';
+
 
 interface ReportFormProps {
   initialLat: number;
@@ -22,6 +24,7 @@ interface ReportFormProps {
 export default function ReportForm({ initialLat = -33.4489, initialLng = -70.6693, onRiskLevelChange, onSubmitIncident, onLocationUpdate }: ReportFormProps) {
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel>('medium');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
 
 
 
@@ -44,10 +47,10 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
     setValue('latitude', initialLat);
     setValue('longitude', initialLng);
   }, [initialLat, initialLng, setValue]);
-
+  
   const onSubmit = async (data: ReportFormData) => {
     setIsSubmitting(true);
-  
+
     try {
       await onSubmitIncident({
         latitude: data.latitude,
@@ -55,8 +58,10 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
         description: data.description,
         risk_level: data.riskLevel,
       });
-  
-      alert('✅ Reporte enviado con éxito');
+
+      // ⭐ CAMBIO: alert → toast
+      toast.success('Report sent successfully! 🔥');
+      
       reset({
         latitude: initialLat,
         longitude: initialLng,
@@ -65,49 +70,51 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
       });
       setSelectedRisk('medium');
     } catch (error) {
-      alert('❌ Error al enviar el reporte');
+      // ⭐ CAMBIO: alert → toast
+      toast.error('Failed to send report. Please try again.');
       console.error(error);
     }
-  
+
     setIsSubmitting(false);
   };
-  
+
   const handleRiskLevelClick = (level: RiskLevel) => {
     setSelectedRisk(level);
     setValue('riskLevel', level);
     onRiskLevelChange?.(level);
   };
 
-const [isGettingLocation, setIsGettingLocation] = useState(false);
-// New funct to get location
-const handleGetLocation = () => {
-  setIsGettingLocation(true);
-  
-  if (!navigator.geolocation) {
-    alert('Geolocation not supported by your browser');
-    setIsGettingLocation(false);
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const { latitude, longitude } = position.coords;
-      setValue('latitude', latitude);
-      setValue('longitude', longitude);
-      // Notificar para centrar el mapa
-      onLocationUpdate?.(latitude, longitude);
+  // ⭐ FUNCIÓN MODIFICADA - Cambio de alert a toast
+  const handleGetLocation = () => {
+    setIsGettingLocation(true);
     
+    if (!navigator.geolocation) {
+      // ⭐ CAMBIO: alert → toast
+      toast.error('Geolocation not supported by your browser');
       setIsGettingLocation(false);
-    },
-    (error) => {
-      alert(`Error getting location: ${error.message}`);
-      setIsGettingLocation(false);
-    },
-    { enableHighAccuracy: true, timeout: 10000 }
-  );
-};
+      return;
+    }
 
-
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setValue('latitude', latitude);
+        setValue('longitude', longitude);
+        onLocationUpdate?.(latitude, longitude);
+        
+        // ⭐ NUEVO: Toast de éxito
+        toast.success('Location updated! 📍');
+        setIsGettingLocation(false);
+      },
+      (error) => {
+        // ⭐ CAMBIO: alert → toast
+        toast.error(`Error getting location: ${error.message}`);
+        setIsGettingLocation(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+  
 
   return (
     <div className={styles.formContainer}>
