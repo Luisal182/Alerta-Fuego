@@ -8,6 +8,7 @@
   /* Light theme (default) */
   --bg-primary: #F8F9FA;
   --bg-secondary: #FFFFFF;
+  --bg-tertiary: #E2E8F0;
   --text-primary: #1F2937;
   --text-secondary: #6B7280;
   --border-color: #E5E7EB;
@@ -17,14 +18,13 @@
   /* Dark theme */
   --bg-primary: #1F2937;
   --bg-secondary: #374151;
+  --bg-tertiary: #4A5568;
   --text-primary: #F9FAFB;
   --text-secondary: #D1D5DB;
   --border-color: #4B5563;
 }
 
-/* ========================================
-   GLOBAL STYLES
-   ======================================== */
+/* == GLOBAL STYLES == */
 
 * {
   margin: 0;

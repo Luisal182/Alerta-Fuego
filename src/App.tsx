@@ -24,9 +24,6 @@ function MapPageContent() {
   // derivate Props 
   const filteredIncidents = getFilteredIncidents(incidents);
 
-  const handleReportClick = () => {
-    console.log('Report button clicked');
-  };
 
   return (
     <Layout
