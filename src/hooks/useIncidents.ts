@@ -8,7 +8,6 @@ export function useIncidents() {
   const sessionStartTime = new Date().toISOString();
 
   useEffect(() => {
-    // initial Fetch of "all" the incidents
     const fetchIncidents = async () => {
       const { data, error } = await supabase
         .from('incidents')

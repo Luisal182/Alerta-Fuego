@@ -4,7 +4,7 @@ import type { Incident } from '../types';
 export const useTimeFilter = () => {
   const [timeFilter, setTimeFilter] = useState<'all' | '30min' | '1h' | 'today'>('all');
 
-  // Filtrar incidentes según el rango de tiempo
+  // Incidents filtered by time and range
   const getFilteredIncidents = (incidents: Incident[]) => {
     const now = new Date();
 

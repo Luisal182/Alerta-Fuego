@@ -27,7 +27,7 @@ export const useAuth = () => {
 
    // Listen for authentication changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      (_event, session) => {
         setUser(session?.user ?? null);
         setIsAuthenticated(!!session?.user);
         setLoading(false);
@@ -39,7 +39,7 @@ export const useAuth = () => {
     };
   }, []);
 
-  // Login
+  // LOGIN
   const login = async (email: string, password: string) => {
     setError(null);
     setLoading(true);
@@ -68,7 +68,7 @@ export const useAuth = () => {
     }
   };
 
-  // Logout
+  // LOGOUT
   const logout = async () => {
     setError(null);
     setLoading(true);

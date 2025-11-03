@@ -11,12 +11,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
 
 
-   // ⭐ FUNCIÓN MODIFICADA - Sin localError, usando toasts
+   // Non localError, using toasts
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
-      // ⭐ CAMBIO: setLocalError → toast
       toast.error('Email and password are required');
       return;
     }
@@ -24,11 +23,11 @@ export default function LoginPage() {
     const result = await login(email, password);
 
     if (result.success) {
-      // ⭐ NUEVO: Toast de éxito
+      // New Toast 
       toast.success('Welcome back! 🎉');
       navigate('/dashboard', { replace: true });
     } else {
-      // ⭐ CAMBIO: setLocalError → toast
+      //  toast
       toast.error(result.error || 'Login failed');
     }
   };
@@ -68,7 +67,6 @@ export default function LoginPage() {
             />
           </div>
 
-        {/* ⭐ OPCIONAL: Puedes mantener o eliminar este div de error */}
         {error && (
             <div className={styles.errorMessage}>
               ❌ {error}

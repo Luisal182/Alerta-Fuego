@@ -32,7 +32,7 @@ export default function DashboardPage() {
     }
   };
 
-  // Filtrar incidents
+  // Filter incidents
   const filteredIncidents = incidents.filter(incident => {
     if (statusFilter && incident.status !== statusFilter) return false;
     if (riskFilter && incident.risk_level !== riskFilter) return false;

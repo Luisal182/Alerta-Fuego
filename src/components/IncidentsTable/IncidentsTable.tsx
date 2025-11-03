@@ -26,12 +26,44 @@ export default function IncidentsTable({
 }: IncidentsTableProps) {
   const [showResourceModal, setShowResourceModal] = useState<string | null>(null);
   const [selectedResources, setSelectedResources] = useState<string[]>([]);
-  // ⭐ NUEVOS ESTADOS para tracking
+  // New for the tracking
   const [updatingRows, setUpdatingRows] = useState<Set<string>>(new Set());
   const [deletingRows, setDeletingRows] = useState<Set<string>>(new Set());
 
   if (loading) {
-    return <div className={styles.loading}>Loading incidents...</div>;
+    return (
+      <div className={styles.tableContainer}>
+        {/* Skeleton Header */}
+        <div className={styles.skeletonHeader}>
+          <div className={styles.skeletonTitle}></div>
+        </div>
+        
+        {/* Skeleton Table */}
+        <div className={styles.skeletonTable}>
+          {/* Skeleton Headers */}
+          <div className={styles.skeletonTableHeader}>
+            {[...Array(9)].map((_, i) => (
+              <div key={i} className={styles.skeletonHeaderCell}></div>
+            ))}
+          </div>
+          
+          {/* Skeleton Rows */}
+          {[...Array(5)].map((_, rowIndex) => (
+            <div key={rowIndex} className={styles.skeletonRow}>
+              <div className={styles.skeletonCell} style={{width: '80px'}}></div>
+              <div className={styles.skeletonCell} style={{width: '120px'}}></div>
+              <div className={styles.skeletonCell} style={{width: '200px'}}></div>
+              <div className={styles.skeletonCell} style={{width: '60px'}}></div>
+              <div className={styles.skeletonCell} style={{width: '100px'}}></div>
+              <div className={styles.skeletonCell} style={{width: '100px'}}></div>
+              <div className={styles.skeletonCell} style={{width: '80px'}}></div>
+              <div className={styles.skeletonCell} style={{width: '100px'}}></div>
+              <div className={styles.skeletonCell} style={{width: '50px'}}></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (incidents.length === 0) {
@@ -77,7 +109,7 @@ export default function IncidentsTable({
     );
   };
 
-  // ⭐ FUNCIÓN MODIFICADA - Añadido toast
+  // Added toast
   const handleResourceSave = async () => {
     if (showResourceModal) {
       try {
@@ -90,7 +122,7 @@ export default function IncidentsTable({
       }
     }
   };
-  // ⭐ NUEVA FUNCIÓN - Status con toast y loading
+  // Status with toast & loading
   const handleStatusChangeWithToast = async (id: string, status: string) => {
     setUpdatingRows(prev => new Set(prev).add(id));
     try {
@@ -107,7 +139,7 @@ export default function IncidentsTable({
     }
   };
 
-  // ⭐ NUEVA FUNCIÓN - Delete con confirmación toast
+  // Delete with confirmation toast
   const handleDeleteWithToast = async (id: string) => {
     toast((t) => (
       <div>
