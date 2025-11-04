@@ -7,7 +7,6 @@ export const useDashboardIncidents = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // inicial  Fetch of all the incidents
   const fetchIncidents = async () => {
     setLoading(true);
     try {
