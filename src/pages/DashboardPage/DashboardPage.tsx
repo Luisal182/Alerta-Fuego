@@ -5,6 +5,7 @@ import { useDashboardIncidents } from '../../hooks/useDashboardIncidents';
 import IncidentsTable from '../../components/IncidentsTable/IncidentsTable';
 import styles from './DashboardPage.module.css';
 import toast from 'react-hot-toast';
+import { StatsSection } from '../../components/StatsSection/StatsSection';
 
 export default function DashboardPage() {
   const { user, logout } = useAuth();
@@ -53,6 +54,9 @@ export default function DashboardPage() {
           </button>
         </div>
       </div>
+
+      {/* New component for Cards*/}
+      <StatsSection incidents={filteredIncidents} />
 
       <div className={styles.dashboardContent}>
         {error && (
