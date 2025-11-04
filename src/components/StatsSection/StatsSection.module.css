@@ -1,0 +1,315 @@
+.statsContainer {
+    margin-bottom: 2rem;
+    animation: fadeInDown 0.6s ease-out;
+  }
+  
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+  }
+  
+  .statCard {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    animation: slideIn 0.5s ease-out var(--animation-delay, 0ms);
+    cursor: pointer;
+  }
+  
+  .statCard:hover {
+    transform: translateY(-4px);
+    border-color: var(--card-color);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15),
+                0 0 1px var(--card-color),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+  }
+  
+  .cardBorder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--card-color), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+  
+  .statCard:hover .cardBorder {
+    opacity: 1;
+    animation: shimmer 1s ease-in-out;
+  }
+  
+  .cardContent {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, rgba(var(--card-rgb), 0.15) 0%, rgba(var(--card-rgb), 0.05) 100%);
+    border: 1px solid rgba(var(--card-rgb), 0.3);
+    border-radius: 10px;
+    transition: all 0.3s ease-out;
+    flex-shrink: 0;
+  }
+  
+  .statCard:hover .iconWrapper {
+    background: linear-gradient(135deg, rgba(var(--card-rgb), 0.25) 0%, rgba(var(--card-rgb), 0.15) 100%);
+    border-color: rgba(var(--card-rgb), 0.5);
+    transform: scale(1.05);
+  }
+  
+  .icon {
+    font-size: 1.75rem;
+    display: block;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .textContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .statValue {
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: countUp 0.6s ease-out;
+  }
+  
+  .statLabel {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease-out;
+  }
+  
+  .statCard:hover .statLabel {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  /* Animationts */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes countUp {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .statsGrid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+  
+    .statCard {
+      padding: 1.25rem;
+    }
+  
+    .iconWrapper {
+      width: 48px;
+      height: 48px;
+    }
+  
+    .icon {
+      font-size: 1.5rem;
+    }
+  
+    .statValue {
+      font-size: 1.625rem;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .statsGrid {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+  
+    .statCard {
+      padding: 1rem;
+    }
+  
+    .cardContent {
+      gap: 0.75rem;
+    }
+  
+    .iconWrapper {
+      width: 44px;
+      height: 44px;
+    }
+  
+    .icon {
+      font-size: 1.25rem;
+    }
+  
+    .statValue {
+      font-size: 1.375rem;
+    }
+  
+    .statLabel {
+      font-size: 0.75rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .statsContainer {
+      margin-bottom: 1.5rem;
+    }
+  
+    .statsGrid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+  
+    .statCard {
+      padding: 0.875rem;
+    }
+  
+    .cardContent {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+  
+    .iconWrapper {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .icon {
+      font-size: 1rem;
+    }
+  
+    .statValue {
+      font-size: 1.25rem;
+    }
+  
+    .statLabel {
+      font-size: 0.625rem;
+    }
+  }
+ 
+  /* Light mode support */
+@media (prefers-color-scheme: light) {
+    .statCard {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+  
+    .statCard:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.75) 100%);
+      border-color: var(--card-color);
+    }
+  
+    .statValue {
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  
+    .statLabel {
+      color: rgba(0, 0, 0, 0.75);
+    }
+  
+    .statCard:hover .statLabel {
+      color: rgba(0, 0, 0, 0.9);
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .statCard {
+      background: linear-gradient(135deg, rgba(30, 30, 30, 0.5) 0%, rgba(20, 20, 20, 0.3) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  
+    .statCard:hover {
+      background: linear-gradient(135deg, rgba(40, 40, 40, 0.6) 0%, rgba(30, 30, 30, 0.4) 100%);
+    }
+  
+    .statValue {
+      background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  
+    .statLabel {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  
+    .statCard:hover .statLabel {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
