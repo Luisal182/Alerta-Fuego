@@ -6,6 +6,7 @@ import Layout from './components/Layout/Layout';
 import Map from './components/Map/Map';
 import ReportForm from './components/ReportForm/ReportForm';
 import LoginPage from './pages/LoginPage/LoginPage';
+import SignUpPage from './pages/SignUpPage/SignUpPage';
 import DashboardPage from './pages/DashboardPage/DashboardPage';
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 import { useIncidents } from './hooks/useIncidents';
@@ -68,6 +69,9 @@ function App() {
 
           {/* Public page - Login */}
           <Route path="/login" element={<LoginPage />} />
+
+           {/* Public page - Sign Up */}
+           <Route path="/signup" element={<SignUpPage />} />
 
           {/* Protected page - Dashboard */}
           <Route

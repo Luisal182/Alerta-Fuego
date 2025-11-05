@@ -1,5 +1,6 @@
 
 import styles from './Header.module.css';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
     onReportClick?: () => void;  
@@ -7,7 +8,8 @@ interface HeaderProps {
     isDarkMode: boolean;
 }
 
-export default function Header({ onReportClick,onThemeToggle, isDarkMode  }: HeaderProps) { 
+export default function Header({ onThemeToggle, isDarkMode  }: HeaderProps) { 
+    const navigate = useNavigate();
     return (
         <header className={styles.header}> 
             <div className={styles.headerLeft}>
@@ -24,12 +26,20 @@ export default function Header({ onReportClick,onThemeToggle, isDarkMode  }: Hea
           aria-label="Toggle theme"
         >
           {isDarkMode ? '☀️' : '🌙'}
-        </button>
-            <button 
-                className={styles.headerButton} 
-                onClick={onReportClick}>  
-                + Report Incident
-            </button>    
+          </button>
+          <button 
+                    className={styles.loginButton}
+                    onClick={() => navigate('/login')}
+                >
+                    Login
+                </button>
+                
+                <button 
+                    className={styles.signupButton}
+                    onClick={() => navigate('/signup')}
+                >
+                    Sign Up
+                </button>    
             </div>
         </header>
     );
