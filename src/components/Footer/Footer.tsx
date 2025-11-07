@@ -38,7 +38,7 @@ export default function Footer() {
         <div className={styles.footerColumn}>
           <h3 className={styles.footerTitle}>Legal Information</h3>
           <p className={styles.footerCopyright}>
-            © 2024 Alerta-Fuego. All rights reserved.
+            © 2025 Alerta-Fuego. All rights reserved.
           </p>
           <p className={styles.footerLegal}>
             This system is intended solely for real emergency reports. Misuse may result in legal sanctions.

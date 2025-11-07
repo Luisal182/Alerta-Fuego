@@ -5,6 +5,7 @@ import styles from './Map.module.css';
 import 'leaflet/dist/leaflet.css';
 import type { RiskLevel } from '../../types';
 import FilterBar from '../FilterBar/FilterBar';
+import { useMapStyle } from '../../hooks/useMapStyle';
 
 
 interface MapProps {
@@ -39,6 +40,7 @@ function MapClickHandler({ onLocationSelect }: { onLocationSelect?: (lat: number
 }
 
 export default function Map({ onLocationSelect, incidents, mapCenter, timeFilter,onTimeFilterChange }: MapProps) {
+  const { getTileLayer, getAttribution, toggleMapStyle, mapStyle } = useMapStyle();
   const center: LatLngExpression = [-33.4489, -70.6693]; // Santiago, Chile
   const zoom = 12;
 
@@ -73,21 +75,30 @@ export default function Map({ onLocationSelect, incidents, mapCenter, timeFilter
   return (
     <div className={styles.mapContainer}>
       <div className={styles.mapHeader}>
-        <span className={styles.mapHeaderIcon}>🗺️</span>
-        <h2 className={styles.mapHeaderTitle}>Incident Map</h2>
-            <FilterBar 
-            timeFilter={timeFilter}
-            onTimeFilterChange={onTimeFilterChange}
-           />
-      </div>
+  <span className={styles.mapHeaderIcon}>🗺️</span>
+  <h2 className={styles.mapHeaderTitle}>Incident Map</h2>
+  
+  <button 
+    onClick={toggleMapStyle}
+    className={styles.mapToggleButton}
+    title="Toggle between 2D and Satellite"
+  >
+    {mapStyle === '2d' ? '🛰️ Satellite' : '🗺️ 2D'}
+  </button>
+  
+  <FilterBar 
+    timeFilter={timeFilter}
+    onTimeFilterChange={onTimeFilterChange}
+  />
+</div>
       <div className={styles.mapWrapper}>
         <MapContainer center={center} zoom={zoom} className={styles.leafletMap} zoomControl={false}>
           {/* Si hay nuevo centro, mover el mapa */}
           {mapCenter && <ChangeMapView center={mapCenter} />}
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          />
+            url={getTileLayer()}
+            attribution={getAttribution()}
+              />
 
           <MapClickHandler onLocationSelect={onLocationSelect} />
 
