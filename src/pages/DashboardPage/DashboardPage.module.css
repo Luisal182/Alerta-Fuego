@@ -13,6 +13,7 @@
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
+    margin-bottom: 1rem;
   }
   
   [data-theme="dark"] .dashboardHeader {
@@ -24,6 +25,32 @@
     font-size: 28px;
     font-weight: 700;
   }
+
+  .themeToggle {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .themeToggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+  
+  .themeToggle:active {
+    transform: scale(0.95);
+  }
+  
   
   .userInfo {
     display: flex;
@@ -138,21 +165,51 @@
     font-weight: 600;
     margin-left: auto;
   }
-  
+
   @media (max-width: 768px) {
     .dashboardHeader {
-      flex-direction: column;
-      gap: 16px;
-      text-align: center;
-    }
-  
-    .userInfo {
-      flex-direction: column;
-      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 16px;
+      align-items: center;
     }
   
     .dashboardTitle {
-      font-size: 24px;
+      font-size: 18px;
+      margin: 0;
+      order: 1;
+      flex: 0 1 auto; 
+      text-align: left; 
+    }
+  
+    .themeToggle {
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+      padding: 0;
+      flex-shrink: 0;
+      order: 2;
+      margin-left: 16px;
+    }
+  
+    .userInfo {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      order: 3;
+    }
+  
+    .userEmail {
+      font-size: 12px;
+    }
+  
+    .logoutButton {
+      padding: 6px 12px;
+      font-size: 12px;
     }
   
     .dashboardContent {
@@ -174,7 +231,9 @@
     }
   
     .countBadge {
-      margin-left: 0;
       text-align: center;
     }
   }
+  
+
+   

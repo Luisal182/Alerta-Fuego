@@ -188,6 +188,41 @@
     }
   }
   
+  @media (max-width: 768px) {
+    .statsGrid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+  
+    .statCard {
+      padding: 0.4rem;
+    }
+  
+    .cardContent {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.2rem;
+    }
+  
+    .iconWrapper {
+      width: 36px;
+      height: 36px;
+    }
+  
+    .icon {
+      font-size: 1rem;
+    }
+  
+    .statValue {
+      font-size: 1.25rem;
+    }
+  
+    .statLabel {
+      font-size: 0.625rem;
+    }
+  }
+  
   @media (max-width: 640px) {
     .statsGrid {
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
