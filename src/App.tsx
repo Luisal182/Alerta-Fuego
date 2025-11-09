@@ -14,6 +14,8 @@ import { useDarkMode } from './hooks/useDarkMode';
 import { useLocation } from './hooks/useLocation';
 import { useTimeFilter } from './hooks/useTimeFilter';
 import { useRiskLevel } from './hooks/useRiskLevel';
+import { useLocation as useRouterLocation } from 'react-router-dom';
+
 
 function MapPageContent() {
   // Personalise Hooks 
@@ -51,41 +53,52 @@ function MapPageContent() {
   );
 }
 
-function App() {
+function AppContent() {
+  const location = useRouterLocation();
   const { isDarkMode, handleThemeToggle } = useDarkMode();
 
   return (
-    <BrowserRouter>
-      <div className="App">
+    <div className="App">
+      {/* Header solo en ciertas rutas */}
+      {location.pathname !== '/login' && 
+      location.pathname !== '/signup' && 
+      location.pathname !== '/dashboard' &&(
         <Header
-          onReportClick={() => console.log('Report button clicked')}
           onThemeToggle={handleThemeToggle}
           isDarkMode={isDarkMode}
         />
+      )}
 
-        <Routes>
-          {/* Public page - Mapa */}
-          <Route path="/" element={<MapPageContent />} />
+      <Routes>
+        {/* Public page - Mapa */}
+        <Route path="/" element={<MapPageContent />} />
 
-          {/* Public page - Login */}
-          <Route path="/login" element={<LoginPage />} />
+        {/* Public page - Login */}
+        <Route path="/login" element={<LoginPage />} />
 
-           {/* Public page - Sign Up */}
-           <Route path="/signup" element={<SignUpPage />} />
+        {/* Public page - Sign Up */}
+        <Route path="/signup" element={<SignUpPage />} />
 
-          {/* Protected page - Dashboard */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+        {/* Protected page - Dashboard */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
 
-        <Footer />
-      </div>
+      <Footer />
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }

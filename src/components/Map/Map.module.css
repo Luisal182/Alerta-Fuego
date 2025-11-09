@@ -62,9 +62,9 @@
   }
   
   /* Dark mode styles for Leaflet tiles */
-  [data-theme="dark"] .leafletMap {
+  /*[data-theme="dark"] .leafletMap {
     filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
-  }
+  }*/
   
   /* Legend */
   .legend {
@@ -160,28 +160,44 @@
       padding: 0 16px;
       gap: 8px;
     }
-  
+
+    .mapHeaderIcon {
+      display: none;
+    }
+
+    .mapToggleButton {
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+
     .mapHeader > div:first-child {
       height: 50px;
       gap: 8px;
     }
   
     .mapHeaderTitle {
-      font-size: 18px;
+      font-size: 1px;
     }
   
     .legend {
       top: 12px;
       right: 12px;
-      padding: 12px;
-      min-width: 150px;
+      padding: 6px;
+      min-width: 95px;
     }
   
     .legendTitle {
-      font-size: 13px;
+      font-size: 10px;
+      margin-bottom: 6px;
     }
   
     .legendItem {
-      font-size: 13px;
+      font-size: 10px;
+      margin-bottom: 4px;
+    }
+  
+    .legendCircle {
+      width: 8px;
+      height: 8px;
     }
   }
