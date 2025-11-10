@@ -6,9 +6,11 @@ import IncidentsTable from '../../components/IncidentsTable/IncidentsTable';
 import styles from './DashboardPage.module.css';
 import toast from 'react-hot-toast';
 import { StatsSection } from '../../components/StatsSection/StatsSection';
+import { useDarkMode } from '../../hooks/useDarkMode';
 
 export default function DashboardPage() {
   const { user, logout } = useAuth();
+  const { isDarkMode, handleThemeToggle } = useDarkMode();
   const navigate = useNavigate();
   const {
     incidents,
@@ -22,6 +24,7 @@ export default function DashboardPage() {
 
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [riskFilter, setRiskFilter] = useState<string | null>(null);
+
 
   const handleLogout = async () => {
     try {
@@ -44,6 +47,15 @@ export default function DashboardPage() {
     <div className={styles.dashboardContainer}>
       <div className={styles.dashboardHeader}>
         <h1 className={styles.dashboardTitle}>📊 Emergency Dashboard</h1>
+        
+        <button 
+      onClick={handleThemeToggle}
+      className={styles.themeToggle}
+      aria-label="Toggle theme"
+    >
+      {isDarkMode ? '☀️' : '🌙'}
+    </button>
+
         <div className={styles.userInfo}>
           <span className={styles.userEmail}>{user?.email}</span>
           <button

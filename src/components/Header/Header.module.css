@@ -163,11 +163,32 @@
     }
   
     .subtitle {
-      font-size: 12px;
+      display: none;
     }
   
     .headerButton {
       padding: 10px 20px;
       font-size: 14px;
+    }
+
+    .headerButton {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+  
+    .loginButton {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+  
+    .signupButton {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+  
+    .themeToggle {
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
     }
   }
