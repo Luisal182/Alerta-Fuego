@@ -56,6 +56,7 @@ export const StatsSection = ({ incidents }: StatsSectionProps) => {
     },
   ];
 
+
   return (
     <div className={styles.statsContainer}>
       <div className={styles.statsGrid}>

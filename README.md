@@ -8,7 +8,7 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 
 **Key Objective:** Enable emergency responders to quickly report, track, and manage incidents in real-time across multiple devices and locations.
 
----
+Built with modern web technologies, the project emphasizes speed, reliability, and usability for critical operations. It has evolved from a minimal public reporting MVP to a full featured system with authentication, real-time notifications, and advanced incident management tools, ready for deployment and real-world use.
 
 ## Features
 

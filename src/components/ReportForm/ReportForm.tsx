@@ -59,8 +59,13 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
         risk_level: data.riskLevel,
       });
 
-      // ⭐ CAMBIO: alert → toast
-      toast.success('Report sent successfully! 🔥');
+       // Delay para dar tiempo al realtime
+        await new Promise(resolve => setTimeout(resolve, 200));
+
+      toast.success('Report sent successfully! 🔥', {
+     duration: 4000,
+     position: 'top-center',
+         });
       
       reset({
         latitude: initialLat,
@@ -70,7 +75,7 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
       });
       setSelectedRisk('medium');
     } catch (error) {
-      // ⭐ CAMBIO: alert → toast
+      // Change alert → toast
       toast.error('Failed to send report. Please try again.');
       console.error(error);
     }
@@ -84,12 +89,11 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
     onRiskLevelChange?.(level);
   };
 
-  // ⭐ FUNCIÓN MODIFICADA - Cambio de alert a toast
   const handleGetLocation = () => {
     setIsGettingLocation(true);
     
     if (!navigator.geolocation) {
-      // ⭐ CAMBIO: alert → toast
+      // alert → toast
       toast.error('Geolocation not supported by your browser');
       setIsGettingLocation(false);
       return;
@@ -102,12 +106,12 @@ export default function ReportForm({ initialLat = -33.4489, initialLng = -70.669
         setValue('longitude', longitude);
         onLocationUpdate?.(latitude, longitude);
         
-        // ⭐ NUEVO: Toast de éxito
+        // NEW Toast 
         toast.success('Location updated! 📍');
         setIsGettingLocation(false);
       },
       (error) => {
-        // ⭐ CAMBIO: alert → toast
+     
         toast.error(`Error getting location: ${error.message}`);
         setIsGettingLocation(false);
       },
