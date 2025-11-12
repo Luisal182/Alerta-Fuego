@@ -1,5 +1,22 @@
 # 🔥 Alerta-Fuego - Emergency Incident Reporting System
 
+## 📋 Table of Contents
+
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Deployment](#deployment)
+- [Features Roadmap](#features-roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
 ## 📖 Project Overview
 
 **Alerta-Fuego** is a real-time emergency incident reporting and management system designed for fire departments, police, and emergency responders. It allows users to report incidents on an interactive map, view and filter active incidents, and manage responses through a professional dashboard.
@@ -8,7 +25,7 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 
 **Key Objective:** Enable emergency responders to quickly report, track, and manage incidents in real-time across multiple devices and locations.
 
-Built with modern web technologies, the project emphasizes speed, reliability, and usability for critical operations. It has evolved from a minimal public reporting MVP to a full featured system with authentication, real-time notifications, and advanced incident management tools, ready for deployment and real-world use.
+---
 
 ## Features
 
