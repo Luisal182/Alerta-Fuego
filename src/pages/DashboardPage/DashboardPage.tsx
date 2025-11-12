@@ -27,19 +27,16 @@ export default function DashboardPage() {
   const [riskFilter, setRiskFilter] = useState<string | null>(null);
   // Ref to track last incident ID for notifications
   const lastIncidentIdRef = useRef<string | null>(null);
-  const dashboardOpenTimeRef = useRef(new Date().getTime());
-      
+
   useEffect(() => {
     if (incidents.length > 0) {
       const latestIncident = incidents[0];
       const latestIncidentTime = new Date(latestIncident.created_at).getTime();
-      
-      // Si hay segundo incident, comparar con él
+
       const secondIncidentTime = incidents[1] 
         ? new Date(incidents[1].created_at).getTime()
         : Infinity;
-      
-      // Mostrar toast si el latest es más reciente que el segundo
+        
       if (
         lastIncidentIdRef.current !== latestIncident.id && 
         latestIncidentTime > secondIncidentTime
