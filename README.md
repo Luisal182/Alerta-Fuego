@@ -1,23 +1,6 @@
 # 🔥 Alerta-Fuego - Emergency Incident Reporting System
 
-## Table of Contents
-
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Deployment](#deployment)
-- [Features Roadmap](#features-roadmap)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
-## Project Overview
+## 📖 Project Overview
 
 **Alerta-Fuego** is a real-time emergency incident reporting and management system designed for fire departments, police, and emergency responders. It allows users to report incidents on an interactive map, view and filter active incidents, and manage responses through a professional dashboard.
 
@@ -25,12 +8,11 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 
 **Key Objective:** Enable emergency responders to quickly report, track, and manage incidents in real-time across multiple devices and locations.
 
----
+Built with modern web technologies, the project emphasizes speed, reliability, and usability for critical operations. It has evolved from a minimal public reporting MVP to a full featured system with authentication, real-time notifications, and advanced incident management tools, ready for deployment and real-world use.
 
 ## Features
 
 ### Interactive Map
-
 - **Real-time incident visualization** on interactive Leaflet map
 - **2D/Satellite view toggle** for different map perspectives
 - **Color-coded incident markers** by risk level:
@@ -42,7 +24,6 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Zoom controls** and intuitive navigation
 
 ### Professional Dashboard
-
 - **Real-time Statistics Cards**:
   - Total incidents count
   - Active incidents (Pending + In Progress)
@@ -53,7 +34,6 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Responsive design** - Works flawlessly on desktop, tablet, and mobile
 
 ### Advanced Incident Management
-
 - **Comprehensive incidents table** with:
   - Status tracking (Pending, In Progress, Resolved)
   - Risk level categorization
@@ -66,7 +46,6 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Incident count badge** showing current filtered results
 
 ### Streamlined Report Creation
-
 - **Intuitive report form** with:
   - Automatic current location detection
   - Manual coordinate input for precise location
@@ -76,24 +55,21 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Direct map integration** - Click on map to set location
 - **Pre-filled fields** when available
 
-### Secure Authentication
-
+### 🔐 Secure Authentication
 - **Email/Password authentication** via Supabase
 - **New user registration** with Sign Up page
 - **Protected dashboard routes** - Only authenticated users can access sensitive data
 - **Secure session management** - Automatic logout functionality
 - **Persistent authentication** across browser sessions
 
-### Real-time Notifications
-
+### 🔔 Real-time Notifications
 - **Instant alerts** when new incidents are created
 - **Toast notifications** for quick user feedback
 - **Auto-refresh** of incident table without page reload
 - **Real-time synchronization** - Updates reflected across multiple devices simultaneously
 - **Zero-delay incident propagation** - Changes visible instantly
 
-### Additional Features
-
+### ⚙️ Additional Features
 - **Theme Toggle** (Light/Dark mode) with persistent preferences
 - **Mobile-optimized navigation** - Specially designed for small screens
 - **Error handling** with user-friendly error messages
@@ -103,10 +79,9 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Frontend
-
 - **React 18** - Modern UI framework with hooks
 - **TypeScript** - Type safety and better DX
 - **Vite** - Lightning-fast build tool
@@ -119,7 +94,6 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Zod** - Schema validation
 
 ### Backend & Database
-
 - **Supabase** - Complete Backend as a Service platform:
   - PostgreSQL relational database
   - Real-time subscriptions (Realtime)
@@ -128,7 +102,6 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
   - API auto-generation
 
 ### Deployment & Infrastructure
-
 - **Vercel** - Hosting and CI/CD platform
 - **GitHub** - Version control and repository management
 
@@ -172,7 +145,6 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 ```
 
 **How to get these values:**
-
 1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
 2. Select your project
 3. Navigate to **Settings → API**
@@ -246,7 +218,7 @@ CREATE POLICY "Allow update own incidents" ON incidents
 
 ---
 
-## Usage
+##  Usage
 
 ### Reporting an Incident
 
@@ -357,7 +329,7 @@ Alerta-Fuego/
 
 ---
 
-## Deployment
+## 🌐 Deployment
 
 ### Deploy on Vercel (Recommended)
 
@@ -406,7 +378,6 @@ git push origin main
 ## Features Roadmap
 
 ### ✅ Completed Features
-
 - ✅ Interactive map with real-time incident markers
 - ✅ Authentication system (Login/Sign Up)
 - ✅ Incident creation and reporting
@@ -418,12 +389,10 @@ git push origin main
 - ✅ Advanced filtering and search
 
 ### 🚧 In Progress
-
 - 🔄 Real-time notifications with sound alerts
 - 🔄 Visual alerts for high-risk incidents
 
 ### 📋 Future Features
-
 - [ ] **User Roles & Permissions** - Admin, Responder, Viewer roles
 - [ ] **Incident Categories** - Fire, Medical, Traffic, etc.
 - [ ] **Resource Dispatch System** - Assign resources to incidents
@@ -482,24 +451,24 @@ in the Software without restriction...
 **Developed by [Luis Arranz](https://github.com/Luisal182)** as part of a final course project in 2025.
 
 Built with ❤️ using:
-
 - React 18 & TypeScript
 - Supabase & PostgreSQL
 - Vite & Vercel
-- Leaflet
+- Leaflet 
 
 ---
 
-## Support & Contact
+## 📞 Support & Contact
 
 For issues, questions, or suggestions:
 
 - 📧 **Email**: luisal.arranz@hotmail.com
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/Luisal182/Alerta-Fuego/issues)
+- 📋 **Feature Requests**: Create an issue with the `enhancement` label
 
 ---
 
-## Project Status
+## 🎯 Project Status
 
 **Status**: 🟢 **Active Development**
 
@@ -513,3 +482,4 @@ For issues, questions, or suggestions:
 **Made for emergency responders, by developers who care about reliability and performance.** 🚒👮🏥
 
 ---
+
