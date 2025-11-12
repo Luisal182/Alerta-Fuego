@@ -7,6 +7,7 @@ import styles from './DashboardPage.module.css';
 import toast from 'react-hot-toast';
 import { StatsSection } from '../../components/StatsSection/StatsSection';
 import { useDarkMode } from '../../hooks/useDarkMode';
+import { useEffect, useRef } from 'react';
 
 export default function DashboardPage() {
   const { user, logout } = useAuth();
@@ -24,9 +25,33 @@ export default function DashboardPage() {
 
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [riskFilter, setRiskFilter] = useState<string | null>(null);
+  // Ref to track last incident ID for notifications
+  const lastIncidentIdRef = useRef<string | null>(null);
 
+  useEffect(() => {
+    if (incidents.length > 0) {
+      const latestIncident = incidents[0];
+      const latestIncidentTime = new Date(latestIncident.created_at).getTime();
 
-  const handleLogout = async () => {
+      const secondIncidentTime = incidents[1] 
+        ? new Date(incidents[1].created_at).getTime()
+        : Infinity;
+        
+      if (
+        lastIncidentIdRef.current !== latestIncident.id && 
+        latestIncidentTime > secondIncidentTime
+      ) {
+        lastIncidentIdRef.current = latestIncident.id;
+        
+        toast.success(`🚨 NEW ${latestIncident.risk_level} incident!`, {
+          duration: 4000,
+          position: 'top-center',
+        });
+      }
+    }
+  }, [incidents]);
+
+    const handleLogout = async () => {
     try {
       await logout();
       toast.success('Logged out successfully');
