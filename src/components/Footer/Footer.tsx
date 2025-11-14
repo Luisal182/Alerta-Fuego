@@ -20,11 +20,11 @@ export default function Footer() {
           <h3 className={styles.footerTitle}>Emergency Contact</h3>
           <div className={styles.footerContactItem}>
             <span className={styles.footerContactIcon}>📞</span>
-            <span>133 (Fire Department)</span>
+            <span>133 (Dpto. Bomberos)</span>
           </div>
           <div className={styles.footerContactItem}>
             <span className={styles.footerContactIcon}>📞</span>
-            <span>132 (CONAF)</span>
+            <span>112 (SUMMA)</span>
           </div>
           <div className={styles.footerContactItem}>
             <span className={styles.footerContactIcon}>✉️</span>
