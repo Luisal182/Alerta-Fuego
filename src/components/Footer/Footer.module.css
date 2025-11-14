@@ -1,16 +1,17 @@
 .footer {
-  background: #1A1F2E;
+  background: linear-gradient(135deg, #1A1F2E 0%, #0F1419 100%);
   color: #CBD5E1;
   padding: 48px 48px;
   width: 100%;
   transition: background 0.3s ease, color 0.3s ease;
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(90deg, #FF4444, #FF8C00, #4ADE80) 1;
 }
 
-/* En dark mode, el footer usa un gris más claro para contrastar */
 [data-theme="dark"] .footer {
-  background: #0F1419;
+  background: linear-gradient(135deg, #0F1419 0%, #1A1F2E 100%);
   color: var(--text-secondary);
-  border-top: 1px solid var(--border-color);
+  border-top: 2px solid rgba(255, 68, 68, 0.3);
 }
 
 .footerContent {
@@ -25,6 +26,11 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition: transform 0.3s ease;
+}
+
+.footerColumn:hover {
+  transform: translateY(-4px);
 }
 
 /* Column 1 */
@@ -33,35 +39,42 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.footerLogo:hover {
+  transform: scale(1.05);
 }
 
 .footerLogoIcon {
   width: 40px;
   height: 40px;
-  background: white;
+  background: linear-gradient(135deg, #FF4444, #FF8C00);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   flex-shrink: 0;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
 }
 
-[data-theme="dark"] .footerLogoIcon {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
+.footerLogoIcon:hover {
+  transform: rotate(15deg) scale(1.1);
+  box-shadow: 0 6px 16px rgba(255, 68, 68, 0.5);
 }
 
 .footerLogoText {
   color: white;
   font-size: 18px;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-
-[data-theme="dark"] .footerLogoText {
-  color: var(--text-primary);
+  font-weight: 700;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #FF4444, #FF8C00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .footerDescription {
@@ -69,6 +82,12 @@
   line-height: 1.6;
   max-width: 280px;
   margin: 0;
+  color: #94A3B8;
+  transition: color 0.3s ease;
+}
+
+.footerColumn:hover .footerDescription {
+  color: #CBD5E1;
 }
 
 /* Column 2 */
@@ -77,11 +96,24 @@
   font-size: 16px;
   font-weight: 700;
   margin: 0 0 16px 0;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  padding-bottom: 8px;
 }
 
-[data-theme="dark"] .footerTitle {
-  color: var(--text-primary);
+.footerTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #FF4444, #FF8C00);
+  transition: width 0.3s ease;
+}
+
+.footerColumn:hover .footerTitle::after {
+  width: 40px;
 }
 
 .footerContactItem {
@@ -89,36 +121,54 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.footerContactItem:hover {
+  background: rgba(255, 68, 68, 0.1);
+  transform: translateX(4px);
+}
+
+[data-theme="dark"] .footerContactItem:hover {
+  background: rgba(255, 68, 68, 0.15);
 }
 
 .footerContactIcon {
   font-size: 16px;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.footerContactItem:hover .footerContactIcon {
+  transform: scale(1.2);
 }
 
 .footerLink {
   color: #CBD5E1;
   text-decoration: none;
-  transition: color 0.2s;
-}
-
-[data-theme="dark"] .footerLink {
-  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 .footerLink:hover {
-  color: #60A5FA;
-  text-decoration: underline;
+  color: #FF4444;
+  text-decoration: none;
+  font-weight: 600;
 }
 
 [data-theme="dark"] .footerLink:hover {
-  color: #93BBFC;
+  color: #FF6B6B;
 }
 
 /* Column 3 */
 .footerCopyright {
   font-size: 13px;
   margin: 0 0 12px 0;
+  font-weight: 600;
+  color: #60A5FA;
 }
 
 .footerLegal {
@@ -126,8 +176,15 @@
   line-height: 1.6;
   max-width: 300px;
   margin: 0;
+  color: #94A3B8;
+  transition: color 0.3s ease;
 }
 
+.footerColumn:hover .footerLegal {
+  color: #CBD5E1;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .footer {
     padding: 32px 24px;
@@ -141,5 +198,13 @@
   .footerDescription,
   .footerLegal {
     max-width: 100%;
+  }
+
+  .footerTitle::after {
+    width: 30px;
+  }
+
+  .footerColumn:hover {
+    transform: translateY(-2px);
   }
 }

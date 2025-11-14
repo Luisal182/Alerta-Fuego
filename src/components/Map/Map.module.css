@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;    
+    z-index: 1;           
   }
   
   /* Map Header */
@@ -15,6 +17,9 @@
     gap: 20px;
     flex-shrink: 0;
     transition: background 0.3s ease;
+    position: sticky;   
+    top: 0;               
+    z-index: 200;          
   }
   
   [data-theme="dark"] .mapHeader {
