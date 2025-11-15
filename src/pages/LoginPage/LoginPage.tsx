@@ -10,8 +10,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-
-   // Non localError, using toasts
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

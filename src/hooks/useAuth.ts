@@ -39,7 +39,6 @@ export const useAuth = () => {
     };
   }, []);
 
-  // LOGIN
   const login = async (email: string, password: string) => {
     setError(null);
     setLoading(true);
