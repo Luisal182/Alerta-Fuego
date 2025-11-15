@@ -26,7 +26,6 @@ function ChangeMapView({ center }: { center: [number, number] }) {
   return null;
 }
 
-// Component to handle map clicks
 function MapClickHandler({ onLocationSelect }: { onLocationSelect?: (lat: number, lng: number) => void }) {
   useMapEvents({
     click: (e) => {
@@ -58,7 +57,6 @@ export default function Map({ onLocationSelect, incidents, mapCenter, timeFilter
     }
   };
 
-  // conversion the risk in to a size for the circle/marker
   const getRiskRadius = (risk: string) => {
     switch (risk) {
       case 'high':
