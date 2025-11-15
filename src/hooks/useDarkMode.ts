@@ -12,7 +12,6 @@ export const useDarkMode = () => {
     }
   }, []);
 
-  // Manejar toggle de tema
   const handleThemeToggle = () => {
     const newTheme = !isDarkMode;
     setIsDarkMode(newTheme);

@@ -1,6 +1,6 @@
 # 🔥 Alerta-Fuego - Emergency Incident Reporting System
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Project Overview](#project-overview)
 - [Features](#features)
@@ -17,7 +17,7 @@
 
 ---
 
-## 📖 Project Overview
+## Project Overview
 
 **Alerta-Fuego** is a real-time emergency incident reporting and management system designed for fire departments, police, and emergency responders. It allows users to report incidents on an interactive map, view and filter active incidents, and manage responses through a professional dashboard.
 
@@ -30,6 +30,7 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 ## Features
 
 ### Interactive Map
+
 - **Real-time incident visualization** on interactive Leaflet map
 - **2D/Satellite view toggle** for different map perspectives
 - **Color-coded incident markers** by risk level:
@@ -41,6 +42,7 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Zoom controls** and intuitive navigation
 
 ### Professional Dashboard
+
 - **Real-time Statistics Cards**:
   - Total incidents count
   - Active incidents (Pending + In Progress)
@@ -51,8 +53,9 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Responsive design** - Works flawlessly on desktop, tablet, and mobile
 
 ### Advanced Incident Management
+
 - **Comprehensive incidents table** with:
-  - Status tracking (Pending, In Progress, Resolved)
+  - Status tracking (Pending, Validated, Rejected)
   - Risk level categorization
   - Incident descriptions and timestamps
   - GPS coordinates (Latitude/Longitude)
@@ -63,6 +66,7 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Incident count badge** showing current filtered results
 
 ### Streamlined Report Creation
+
 - **Intuitive report form** with:
   - Automatic current location detection
   - Manual coordinate input for precise location
@@ -73,37 +77,34 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Pre-filled fields** when available
 
 ### 🔐 Secure Authentication
+
 - **Email/Password authentication** via Supabase
 - **New user registration** with Sign Up page
 - **Protected dashboard routes** - Only authenticated users can access sensitive data
 - **Secure session management** - Automatic logout functionality
 - **Persistent authentication** across browser sessions
 
-### 🔔 Real-time Notifications
-- **Instant alerts** when new incidents are created
-- **Toast notifications** for quick user feedback
-- **Auto-refresh** of incident table without page reload
-- **Real-time synchronization** - Updates reflected across multiple devices simultaneously
-- **Zero-delay incident propagation** - Changes visible instantly
-
 ### ⚙️ Additional Features
+
 - **Theme Toggle** (Light/Dark mode) with persistent preferences
 - **Mobile-optimized navigation** - Specially designed for small screens
 - **Error handling** with user-friendly error messages
 - **Loading states** for better UX during data fetching
 - **Professional branding** and UI throughout the application
 - **Skeleton loaders** for better perceived performance
+- **Advanced filtering** by status, risk level, and time periods
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 18** - Modern UI framework with hooks
 - **TypeScript** - Type safety and better DX
 - **Vite** - Lightning-fast build tool
 - **React Router v6** - Client-side navigation
-- **Tailwind CSS + CSS Modules** - Styling and component styles
+- **CSS Modules** - Styling and component styles
 - **Leaflet** - Interactive mapping library
 - **React Leaflet** - React bindings for Leaflet
 - **React Hot Toast** - Beautiful, accessible notifications
@@ -111,14 +112,17 @@ Built with modern web technologies, the project emphasizes speed, reliability, a
 - **Zod** - Schema validation
 
 ### Backend & Database
+
 - **Supabase** - Complete Backend as a Service platform:
   - PostgreSQL relational database
+  - PostGIS for geospatial queries
   - Real-time subscriptions (Realtime)
   - Authentication and Authorization (Auth)
   - Row Level Security (RLS) policies
   - API auto-generation
 
 ### Deployment & Infrastructure
+
 - **Vercel** - Hosting and CI/CD platform
 - **GitHub** - Version control and repository management
 
@@ -142,7 +146,7 @@ Ensure you have the following installed and configured:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/Luisal182/Alerta-Fuego.git
+git clone https://github.com/Luisal182/Alerta-Fuego
 cd Alerta-Fuego
 ```
 
@@ -162,6 +166,7 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 ```
 
 **How to get these values:**
+
 1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
 2. Select your project
 3. Navigate to **Settings → API**
@@ -180,62 +185,114 @@ Visit `http://localhost:5173` in your browser 🎉
 
 ## ⚙️ Configuration
 
-### Supabase Database Setup
+### Supabase Setup Guide
 
-#### 1. Create the `incidents` Table
+#### STEP 1: Create a New Project on Supabase
 
-Execute this SQL in Supabase SQL Editor:
+1. Go to **[app.supabase.com](https://app.supabase.com)**
+2. Click **"New Project"**
+3. Configure the following settings:
+   - **Project name**: `alerta-fuego` (or your preferred name)
+   - **Database Password**: Generate a strong password and save it securely
+   - **Region**: Choose the closest region to your location (e.g., `eu-central-1` Frankfurt for Europe)
+   - **Pricing Plan**: Free tier is sufficient for MVP
+4. Click **"Create new project"**
+5. ⏳ Wait ~2 minutes while the project is being set up
 
-```sql
-CREATE TABLE incidents (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  latitude DECIMAL(9, 6) NOT NULL,
-  longitude DECIMAL(9, 6) NOT NULL,
-  description TEXT NOT NULL,
-  risk_level VARCHAR(20) NOT NULL CHECK (risk_level IN ('low', 'medium', 'high')),
-  status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'in_progress', 'resolved')),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
-);
+#### STEP 2: Configure Environment Variables
+
+Create a `.env.local` file in the root of your project:
+
+```env
+VITE_SUPABASE_URL=your_project_url_here
+VITE_SUPABASE_ANON_KEY=your_anon_key_here
 ```
 
-#### 2. Enable Real-time Subscriptions
+To get these values:
 
-1. Go to Supabase Dashboard
-2. Navigate to **Replication**
+1. Go to **Project Settings → API**
+2. Copy the **Project URL**
+3. Copy the **anon public key**
+4. Paste both into your `.env.local` file
+
+#### STEP 3: Create the Table in Supabase
+
+Go to the **SQL Editor** in your Supabase dashboard and execute the following SQL:
+
+```sql
+-- Enable PostGIS extension for advanced geospatial handling
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+-- Create incidents table
+CREATE TABLE incidents (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  latitude DECIMAL(10, 8) NOT NULL,
+  longitude DECIMAL(11, 8) NOT NULL,
+  location GEOGRAPHY(POINT, 4326),
+  description TEXT NOT NULL,
+  risk_level VARCHAR(10) NOT NULL CHECK (risk_level IN ('low', 'medium', 'high')),
+  status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'validated', 'rejected')),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Create indexes for better query performance
+CREATE INDEX idx_incidents_location ON incidents USING GIST(location);
+CREATE INDEX idx_incidents_status ON incidents(status);
+CREATE INDEX idx_incidents_created_at ON incidents(created_at DESC);
+
+-- Function to automatically update location from lat/lng
+CREATE OR REPLACE FUNCTION update_location()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.location = ST_SetSRID(ST_MakePoint(NEW.longitude, NEW.latitude), 4326);
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to keep location synchronized on each INSERT/UPDATE
+CREATE TRIGGER update_incident_location
+  BEFORE INSERT OR UPDATE ON incidents
+  FOR EACH ROW
+  EXECUTE FUNCTION update_location();
+
+-- Enable Row Level Security
+ALTER TABLE incidents ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow public read access to all incidents
+CREATE POLICY "Public can read all incidents" ON incidents
+  FOR SELECT USING (true);
+
+-- Policy: Allow public insertion of incidents
+CREATE POLICY "Public can insert incidents" ON incidents
+  FOR INSERT WITH CHECK (true);
+
+-- Policy: Allow auth delete incidents
+  CREATE POLICY "Authenticated can delete incidents" ON incidents
+  FOR DELETE
+  USING (auth.role() = 'authenticated');
+```
+
+#### STEP 4: Enable Real-time Subscriptions
+
+1. Go to the Supabase dashboard
+2. Navigate to **Replication** (in the left sidebar)
 3. Select the `incidents` table
-4. Enable **INSERT** and **UPDATE** events
-5. Save changes
+4. Enable the **INSERT** and **UPDATE** events
+5. Click **Save**
 
-#### 3. Set up Authentication
+#### STEP 5: Configure Authentication
 
 1. Go to **Authentication → Providers**
 2. Click on **Email**
 3. Enable the Email provider
-4. (Optional) For development, disable "Confirm email" requirement
-5. Configure custom email templates if needed
-
-#### 4. Set up Row Level Security (Production)
-
-For production deployments, configure RLS policies to restrict access:
-
-```sql
--- Allow users to read all incidents
-CREATE POLICY "Allow public read access" ON incidents
-  FOR SELECT USING (true);
-
--- Allow authenticated users to insert incidents
-CREATE POLICY "Allow authenticated insert" ON incidents
-  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-
--- Allow users to update their own incidents
-CREATE POLICY "Allow update own incidents" ON incidents
-  FOR UPDATE USING (auth.uid()::text = auth.uid()::text);
-```
+4. **(Optional)** For development, disable "Confirm email" if you want quick testing
+5. Configure custom email templates if necessary (optional)
 
 ---
 
-##  Usage
+## Usage
 
 ### Reporting an Incident
 
@@ -285,11 +342,11 @@ Alerta-Fuego/
 │   └── favicon.ico
 ├── src/
 │   ├── assets/
-│   │   └── sounds/
-│   │       ├── high-risk.mp3
-│   │       ├── medium-risk.mp3
-│   │       └── low-risk.mp3
+│   │   └── react.svg
 │   ├── components/
+│   │   ├── FilterBar/
+│   │   │   ├── FilterBar.tsx
+│   │   │   └── FilterBar.module.css
 │   │   ├── Header/
 │   │   │   ├── Header.tsx
 │   │   │   └── Header.module.css
@@ -304,11 +361,15 @@ Alerta-Fuego/
 │   │   │   └── IncidentsTable.module.css
 │   │   ├── StatsSection/
 │   │   │   ├── StatsSection.tsx
-│   │   │   ├── StatsSection.module.css
-│   │   │   └── StatsSection-animations.module.css
+│   │   │   └── StatsSection.module.css
 │   │   ├── Layout/
-│   │   ├── ProtectedRoute/
-│   │   └── Footer/
+│   │   │   ├── Layout.tsx
+│   │   │   └── Layout.module.css
+│   │   ├── Footer/
+│   │   │   ├── Footer.tsx
+│   │   │   └── Footer.module.css
+│   │   └── ProtectedRoute/
+│   │       └── ProtectedRoute.tsx
 │   ├── pages/
 │   │   ├── LoginPage/
 │   │   │   ├── LoginPage.tsx
@@ -326,15 +387,18 @@ Alerta-Fuego/
 │   │   ├── useMapStyle.ts
 │   │   ├── useDashboardIncidents.ts
 │   │   ├── useRealtimeNotifications.ts
-│   │   └── useLocation.ts
-│   ├── utils/
-│   │   └── alertSounds.ts
+│   │   ├── useLocation.ts
+│   │   ├── useRiskLevel.ts
+│   │   └── useTimeFilter.ts
 │   ├── lib/
 │   │   └── supabase.ts
 │   ├── types/
 │   │   └── index.ts
+│   ├── utils/
+│   │   └── alertSounds.ts
 │   ├── App.tsx
 │   ├── App.css
+│   ├── index.css
 │   └── main.tsx
 ├── .env.local (not in git)
 ├── .gitignore
@@ -346,7 +410,7 @@ Alerta-Fuego/
 
 ---
 
-## 🌐 Deployment
+## Deployment
 
 ### Deploy on Vercel (Recommended)
 
@@ -394,38 +458,36 @@ git push origin main
 
 ## Features Roadmap
 
-### ✅ Completed Features
+### Completed Features
+
 - ✅ Interactive map with real-time incident markers
 - ✅ Authentication system (Login/Sign Up)
 - ✅ Incident creation and reporting
 - ✅ Comprehensive dashboard with statistics
-- ✅ Real-time incident updates
+- ✅ Real-time incident updates via Supabase
 - ✅ Dark mode support
 - ✅ Map 2D/Satellite toggle
 - ✅ Fully responsive mobile design
 - ✅ Advanced filtering and search
+- ✅ PostGIS geospatial database support
+- ✅ Visual Alerts - Toast notifications for all incidents and alerts
+- ✅ User Roles & Permissions - Public users can report incidents, only authorities/admin can access dashboard
 
-### 🚧 In Progress
-- 🔄 Real-time notifications with sound alerts
-- 🔄 Visual alerts for high-risk incidents
+### 🚧 In Progress / Planned
+
+- 🔄 **Sound Alerts** - Audio notifications for all the risk incidents (Dashboard)
 
 ### 📋 Future Features
-- [ ] **User Roles & Permissions** - Admin, Responder, Viewer roles
-- [ ] **Incident Categories** - Fire, Medical, Traffic, etc.
+
 - [ ] **Resource Dispatch System** - Assign resources to incidents
-- [ ] **Push Notifications** - Browser and mobile push alerts
 - [ ] **Analytics & Reporting** - Export incident data and statistics
-- [ ] **Heatmap Visualization** - Visual density of incidents by area
 - [ ] **PWA/Offline Support** - Progressive Web App functionality
 - [ ] **Multi-language Support** - Spanish, French, German, etc.
 - [ ] **API for Third-party Integration** - REST/GraphQL API
-- [ ] **Incident History Timeline** - Detailed incident progression tracking
-- [ ] **Performance Metrics** - Response time analytics
-- [ ] **Incident Categorization** - Auto-categorize incidents by content
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome and greatly appreciated!
 
@@ -468,24 +530,24 @@ in the Software without restriction...
 **Developed by [Luis Arranz](https://github.com/Luisal182)** as part of a final course project in 2025.
 
 Built with ❤️ using:
+
 - React 18 & TypeScript
 - Supabase & PostgreSQL
 - Vite & Vercel
-- Leaflet 
+- Leaflet
 
 ---
 
-## 📞 Support & Contact
+## Support & Contact
 
 For issues, questions, or suggestions:
 
 - 📧 **Email**: luisal.arranz@hotmail.com
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/Luisal182/Alerta-Fuego/issues)
-- 📋 **Feature Requests**: Create an issue with the `enhancement` label
 
 ---
 
-## 🎯 Project Status
+## Project Status
 
 **Status**: 🟢 **Active Development**
 
@@ -496,7 +558,6 @@ For issues, questions, or suggestions:
 
 ---
 
-**Made for emergency responders, by developers who care about reliability and performance.** 🚒👮🏥
+**Made for emergency responders, by developers who care about reliability and performance.**
 
 ---
-

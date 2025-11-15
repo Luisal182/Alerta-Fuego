@@ -70,7 +70,7 @@ function AppContent() {
       )}
 
       <Routes>
-        {/* Public page - Mapa */}
+        {/* Public page - Map */}
         <Route path="/" element={<MapPageContent />} />
 
         {/* Public page - Login */}

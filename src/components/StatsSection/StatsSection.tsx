@@ -13,7 +13,6 @@ interface StatsSectionProps {
 }
 
 export const StatsSection = ({ incidents }: StatsSectionProps) => {
-  // Calcular estadísticas
   const calculateStats = () => {
     const today = new Date().toDateString();
     

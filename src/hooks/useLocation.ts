@@ -5,7 +5,6 @@ export const useLocation = () => {
   const [selectedLng, setSelectedLng] = useState(-70.6693);
   const [mapCenter, setMapCenter] = useState<[number, number] | undefined>(undefined);
 
-  // handle location selection on the map
   const handleLocationSelect = (lat: number, lng: number) => {
     setSelectedLat(lat);
     setSelectedLng(lng);
